@@ -4,7 +4,7 @@ import { UserDto } from './dto/user.dto';
 
 export interface Grade {
     subject: string;
-    score: number;
+    score: string;
     credit: number;
   }
   
@@ -31,7 +31,7 @@ export class UserService {
         let totalgrade = 0;
         let totalcredithours = 0;
         for (const grade of this.grades) {
-          totalgrade += grade.score * grade.credit;
+          totalgrade += parseFloat(grade.score) * grade.credit;
           totalcredithours += grade.credit;
         }
         return totalgrade / totalcredithours;
