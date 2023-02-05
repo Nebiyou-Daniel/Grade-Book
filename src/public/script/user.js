@@ -54,7 +54,7 @@ let yearData = {
         gpa: 0
     },
     '11': {
-        courses: [['123', 3, 'A']],
+        courses: [],
         gpa: 0
     },
     '12': {
@@ -142,7 +142,9 @@ async function getName() {
     }
 }
 
-
+/**
+ * @returns array query, query[0] = the selected year and query[1] = selected semester.
+ */
 function currSelected() {
     let query = [];
     const allYears = document.querySelectorAll(".year");
@@ -336,7 +338,6 @@ addCourseBtn.addEventListener('click', function () {
     if (creditHours.value=="", courseName.value=="", courseGrade.value == ""){
         return false;
     }
-
     if (yearSelected == 0) {
         console.log('select appropriate year');
     } else {
@@ -361,7 +362,6 @@ async function addCourseFetch (courseName, courseGrade, creditHours, year, semes
         console.log("unable to add data");
         return;
     }
-
 }
 
 
