@@ -66,12 +66,12 @@ async function validateForm1(name, email, password) {
         console.log("invalid password");
         return false;
     }
-
     return true;
 }
 
+
 async function isEmailTaken(email) {
-    const response = await fetch('email-check-api', {
+    const response = await fetch('localhost:3003/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ createAcc.addEventListener("click", async function () {
     }
     // create user
     // requestbody: name, email, password, universityName, Study Level
-    const response = await fetch('signUpApiUrl', {
+    const response = await fetch('localhost:3003/auth/signup', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

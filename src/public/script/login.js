@@ -9,8 +9,8 @@ form.addEventListener('submit', async (event) => {
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
 
-    // api/login
-    const response = await fetch('https://reqres.in/api/login', {
+    // localhost:3003/api/login
+    const response = await fetch('localhost:3003/api/login', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

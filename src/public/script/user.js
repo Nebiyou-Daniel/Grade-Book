@@ -97,13 +97,13 @@ let yearData = {
 
 async function reload() {
     // fetch grades
-    const response = await fetch('getgrades', {
+    const response = await fetch('localhost:3003/user', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        // body: JSON.stringify({ userName, email, password, universityName, studyLevel }),
+        body: JSON.stringify({ userName, email, password, universityName, studyLevel }),
     });
     const data = await response.json();
 
@@ -119,17 +119,16 @@ async function reload() {
 }
 
 
-
 // fetchName
 async function getName() {
 
-    const response = await fetch('https://reqres.in/api/user/2', {
+    const response = await fetch('localhost:3003/auth/login', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        // body: JSON.stringify({ userName, email, password, universityName, studyLevel }),
+        body: JSON.stringify({ userName, email, password, universityName, studyLevel }),
     });
     const data = await response.json();
     console.log(data);
@@ -138,9 +137,10 @@ async function getName() {
         userName.innerHTML = data.data.name;
     } else {
         console.log("unable to fetch userName");
-        return;
+        return ;
     }
 }
+
 
 /**
  * @returns array query, query[0] = the selected year and query[1] = selected semester.
@@ -291,7 +291,7 @@ table.addEventListener("click", event => {
 
 
 async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, editGrade) {
-    const response = await fetch('editcourseapi', {
+    const response = await fetch('localhost:3003/api/course/edit', {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -311,7 +311,7 @@ async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, 
 }
 
 async function deleteCourseFetch(deleteCourseName) {
-    const response = await fetch('editcourseapi', {
+    const response = await fetch('localhost:3003/api/course/delete', {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -346,7 +346,7 @@ addCourseBtn.addEventListener('click', function () {
 })
 
 async function addCourseFetch (courseName, courseGrade, creditHours, year, semester) {
-    const response = await fetch('editcourseapi', {
+    const response = await fetch('localhost:3003/api/course/add', {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
