@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { Prisma } from "@prisma/client";
 import * as argon from 'argon2';
 // import argon2 
 
@@ -26,7 +26,7 @@ export class AuthService {
             // return the saved user
             return user;            
         }catch (error){
-            if(error instanceof PrismaClientKnownRequestError){
+            if(error instanceof Prisma.PrismaClientKnownRequestError){
                 if(error.code === 'P2002'){
                     throw new ForbiddenException(`the ${error.meta.target} credential has been taken`)
                 }
