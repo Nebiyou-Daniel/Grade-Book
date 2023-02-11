@@ -10,7 +10,7 @@ export class UserDto {
     
     @IsNotEmpty()
     @IsString()  
-    score: number;
+    score: string;
     
     @IsNotEmpty()
     @IsNumber()    
