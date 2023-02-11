@@ -12,8 +12,6 @@ export class UsersService {
         console.log(dto)
         //verify if password is correct
         if(argon.verify(user.password,dto.oldPassword)){
-            //verify if confirm password and new password are the same
-            if(dto.confirmPassword==dto.newPassword){
                 //insert the password
                 const returnObj= await this.prismaService.user.update({
                     where:{id: Id},
@@ -23,7 +21,6 @@ export class UsersService {
             //return object
             return returnObj
             }
-        }
     }
     
     async updateProfile(Id: number, dto: ProfileUpdateDto){
@@ -40,6 +37,58 @@ export class UsersService {
     }
 
     async updateGradingSystem(Id: number, dto:GradeSystemUpdateDto){
-        //database doesn't exist
-    }
+        let gradeSys=await this.prismaService.gradeSystem.findUnique({
+            where: {userId: Id}
+        })
+        if(!gradeSys){
+            let returnObj=await this.prismaService.gradeSystem.create({
+                data:{
+                    A: dto.A,
+                    Am: dto.Am,
+                    Bp: dto.Bp,
+                    B: dto.B,
+                    Bm: dto.Bm,
+                    Cp: dto.Cp,
+                    C: dto.C,
+                    Cm: dto.Cm,
+                    D: dto.D,
+                    F: dto.F,
+                    userId: Id
+                }
+            })
+            return returnObj
+        }
+        else{
+            let keys=Object.keys(dto)
+            let valid=true
+            let key:string
+            for(let i=0;i<keys.length-1;i++){
+                key=keys[i]
+                let nextKey=keys[i+1]
+                if(dto[key]<dto[nextKey]){
+                    valid=false
+                    break
+                }  
+            }
+            if(valid){
+                const returnObj=await this.prismaService.gradeSystem.update({
+                    where:{userId: Id},
+                    data:{
+                        A: dto.A,
+                        Am: dto.Am,
+                        Bp: dto.Bp,
+                        B: dto.B,
+                        Bm: dto.Bm,
+                        Cp: dto.Cp,
+                        C: dto.C,
+                        Cm: dto.Cm,
+                        D: dto.D,
+                        F: dto.F,
+                    }
+                })
+                return returnObj
+            }
+            return {errorKey: key}
+        }
+    }     
 }

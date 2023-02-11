@@ -19,10 +19,28 @@ model User {
   password String
 
   courses Course[]
+  gradeSystem GradeSystem?
 
   @@map("users")
 }
 
+model GradeSystem {
+  A Float
+  Am Float
+  Bp Float
+  B Float
+  Bm Float
+  Cp Float
+  C Float
+  Cm Float
+  D Float
+  F Float
+  
+
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id])
+
+}
 
 model Course {
   createdAt DateTime @default(now())
