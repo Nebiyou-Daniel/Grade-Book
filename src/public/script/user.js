@@ -28,6 +28,32 @@ radioButtons.forEach(radioButton => {
 });
 
 
+function displaySuccessMessage(messageContent) {
+    let messageText = document.getElementById("message-text");
+    messageText.innerHTML = messageContent;
+  
+    let messageContainer = document.getElementById("message-container");
+    messageContainer.style.display = "block";
+  
+    setTimeout(function () {
+      messageContainer.style.display = "none";
+    }, 2000);
+  }
+  
+function displayErrorMessage(errorContent) {
+    const errorPopup = document.getElementById("error-popup");
+    const errorText = document.getElementById("error-text");
+
+    errorText.innerHTML = errorContent;
+    errorPopup.style.display = "block";
+
+    setTimeout(function () {
+        errorPopup.style.display = "none";
+    }, 2000);
+}
+
+// displaySuccessMessage("Course Deleted Successfully. ")
+displayErrorMessage('Error test message  ')
 const editButton = document.createElement('img')
 editButton.classList.add('edit-btn', 'cursor');
 editButton.setAttribute('src', "images/edit.png");
@@ -71,15 +97,14 @@ let gpaData = {
     '51': { gpa: 0 },
     '52': { gpa: 0 }
 }
-updateTable();
 
 /**
  * gets course names, gpa and cgpa, then update the table to the current values in the yearData
  */
 async function reload() {
     await getCourses();
-    await updateTable();
     await getcgpa();
+    await updateTable();
 }
 
 /**
@@ -314,9 +339,6 @@ table.addEventListener("click", event => {
 
                 deletePopup.classList.add("hidden");
 
-                // for debudding purpose
-                console.log(deleteCourseName.innerHTML);
-
                 await deleteCourseFetch(deleteCourseName.innerHTML);
             });
         }
@@ -329,6 +351,7 @@ table.addEventListener("click", event => {
         }
     }
 });
+
 
 /**
  * 
@@ -345,13 +368,14 @@ async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, 
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ prevCourseName, editCourseName, editCreditHours, editGrade }),
+        body: JSON.stringify({ prevCourseName, editCourseName, editCreditHours, editGrade, token }),
     });
 
     if (response.ok) {
         reload();
+        displaySuccessMessage("Course Edited Successfully. ")
     } else {
-        alert("failed to edit data");
+        displayErrorMessage(`Failed to edit the selected course. `)
         return;
     }
 }
@@ -374,9 +398,10 @@ async function deleteCourseFetch(deleteCourseName) {
 
     if (response.ok) {
         reload();
+        displaySuccessMessage("Course Deleted Successfully. ")
     } else {
-        console.log("failed to delete data");
-        return;
+        displayErrorMessage(`Failed to delete the selected course. `)
+        return ;
     }
 }
 
@@ -408,9 +433,10 @@ async function addCourseFetch(courseName, courseGrade, creditHours, year, semest
 
     if (response.ok) {
         reload();
+        displaySuccessMessage("Course added successfully. ")
     } else {
-        console.log("failed to add course");
-        return;
+        displayErrorMessage(`Failed to add course.`)
+        return ;
     }
 }
 
