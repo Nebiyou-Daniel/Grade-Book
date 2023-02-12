@@ -9,8 +9,8 @@ form.addEventListener('submit', async (event) => {
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
 
-    // localhost:3003/api/login
-    const response = await fetch('localhost:3003/api/login', {
+    console.log(email,password)
+    const response = await fetch('http:localhost:3003/auth/login', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -21,8 +21,8 @@ form.addEventListener('submit', async (event) => {
     const data = await response.json();
     console.log(data)
 
-    if (data.token) {
-        localStorage.setItem("token", data.token);
+    if (response.ok) {
+        localStorage.setItem("access4_token", data.access_token);
         console.log(data);
         await Redirect();
     } else {
@@ -33,7 +33,7 @@ form.addEventListener('submit', async (event) => {
 
 
 async function Redirect() {
-    window.location.replace("/src/user.html");
+    window.location.replace("./user.html");
 }
 
 
