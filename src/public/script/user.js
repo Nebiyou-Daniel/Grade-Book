@@ -368,7 +368,7 @@ async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, 
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ prevCourseName, editCourseName, editCreditHours, editGrade, token }),
+        body: JSON.stringify({ prevCourseName, editCourseName, editCreditHours, editGrade }),
     });
 
     if (response.ok) {
