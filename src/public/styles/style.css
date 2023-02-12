@@ -198,6 +198,8 @@ label {
   z-index: 9999;
 }
 
+
+
 /* error and success messages */
 #message-box, .error-message {
   position: absolute;
@@ -205,3 +207,4 @@ label {
   transform: translate(-50%, -50%);
   padding: 20px;
 }
+

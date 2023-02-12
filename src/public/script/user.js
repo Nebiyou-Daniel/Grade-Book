@@ -52,8 +52,8 @@ function displayErrorMessage(errorContent) {
     }, 2000);
 }
 
-displaySuccessMessage("Course Deleted Successfully. ")
-// displayErrorMessage('Error test message  ')
+// displaySuccessMessage("Course Deleted Successfully. ")
+displayErrorMessage('Error test message  ')
 const editButton = document.createElement('img')
 editButton.classList.add('edit-btn', 'cursor');
 editButton.setAttribute('src', "images/edit.png");
