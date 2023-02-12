@@ -16,6 +16,25 @@
 </head>
 
 <body>
+
+    <!-- message success -->
+    <div id="message-container" class="fs-2 fw-bold shadow text-light w-100 h-100 top-0 bottom-0">
+        <div id="message-box"
+            class="message-success bg-success text-center rounded-2 border border-2 border-dark top-50 start-50">
+            <img src="images/success.png" alt="SUCCESS : " class="w-25 ">
+            <p id="message-text"> </p>
+        </div>
+    </div>
+
+    <!-- message error -->
+    <div class="top-0  bottom-0 start-0 end-0 fs-2 text-center fw-bold shadow" id="error-popup" class="fs-2">
+        <div class="error-message top-50 start-50 border shadow border-dark border-2 rounded-2 bg-danger text-dark">
+            <img src="images/warning.png" alt="Error : " class="w-25 border border-dark rounded-pill">
+            <p id="error-text" class="text-center"></p>
+        </div>
+    </div>
+
+
     <!-- navbar -->
     <nav class="navbar navbar-secondary navbar-expand-sm bg-primary justify-items-top ">
         <div class="container-fluid border-bottom">
@@ -68,20 +87,20 @@
                     <!-- <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio0"
                         autocomplete="off" value="0">
                     <label class="btn btn-outline-primary col-4 col-md-1" for="vbtn-radio0">All</label> -->
-                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio1"
-                        autocomplete="off" value="1" checked>
+                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio1" autocomplete="off"
+                        value="1" checked>
                     <label class="btn btn-outline-primary col-4 col-md-1" for="vbtn-radio1">Year 1</label>
-                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio2"
-                        autocomplete="off" value="2">
+                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio2" autocomplete="off"
+                        value="2">
                     <label class="btn btn-outline-primary col-4 col-md-1" for="vbtn-radio2">Year 2</label>
-                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio3"
-                        autocomplete="off" value="3">
+                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio3" autocomplete="off"
+                        value="3">
                     <label class="btn btn-outline-primary col-4 col-md-1" for="vbtn-radio3">Year 3</label>
-                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio4"
-                        autocomplete="off" value="4">
+                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio4" autocomplete="off"
+                        value="4">
                     <label class="btn btn-outline-primary col-4 col-md-1" for="vbtn-radio4">Year 4</label>
-                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio5"
-                        autocomplete="off" value="5">
+                    <input type="radio" class="btn-check year" name="vbtn-radio" id="vbtn-radio5" autocomplete="off"
+                        value="5">
                     <label class="btn btn-outline-primary col-4 col-md-1" for="vbtn-radio5">Year 5</label>
                 </div>
             </div>
@@ -112,15 +131,15 @@
 
                         <div class="col-4 col-md-3">
                             <label class="form-label text" for="creditHours"># of Credits </label>
-                            <input class="form-control newCreditHours" name="numberOfCredits type="number" min="1"
+                            <input class="form-control newCreditHours" name="numberOfCredits type=" number" min="1"
                                 max="10" value="5" id="numberOfCredits" aria-label="creditHours">
                         </div>
 
                         <div class="col-4 col-md-3">
                             <label class="form-label text" for="grade">Grade</label>
-                            <select class="form-select newGrade" name="grade" id="grade" value="-"
+                            <select class="form-select newGrade" name="grade" id="grade" required
                                 aria-label="Default select example">
-                                <option class="" value=""></option>
+                                <option value="">Select grade</option>
                                 <option value="A+">A+</option>
                                 <option value="A">A</option>
                                 <option value="A-">A-</option>
@@ -166,7 +185,7 @@
                     <input type="text" class="form-control" id="courseNameEdit" required>
 
                     <label class="form-label text" for="creditHourEdit"># of Credits </label>
-                    <input class="form-control" name="numberOfYears" type="number" min="1" max="10" id="creditHourEdit"> 
+                    <input class="form-control" name="numberOfYears" type="number" min="1" max="10" id="creditHourEdit">
                     <label for="gradeEdit">Grade</label>
                     <select class="form-select newGrade" name="grade" id="gradeEdit">
                         <option class="" value=""></option>

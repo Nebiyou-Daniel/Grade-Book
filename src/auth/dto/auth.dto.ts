@@ -15,6 +15,10 @@ export class AuthDtoSignUp{
     @IsNotEmpty()
     @IsString()    
     password: string;
+
+    @IsNotEmpty()
+    @IsString()    
+    universityName: string;
 }
 
 export class AuthDtoLogIn{

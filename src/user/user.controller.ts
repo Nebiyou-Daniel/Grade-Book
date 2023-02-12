@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Patch } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
+import { PasswordUpdateDto, ProfileUpdateDto, GradeSystemUpdateDto } from './dto';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
@@ -9,19 +10,36 @@ import { UserService } from './user.service';
 @Controller('user')
 export class UserController {
     constructor( private userservice: UserService) {}
+    
+    @Get('me')
+    getMe(@GetUser() user: User){
+        return user;
+    }
 
-    @Post('add-grade')
+    @Post('add')
     addGrade ( @Body() userdto: UserDto): string{
         const grade = this.userservice.insert(userdto);
         return `Grade for ${grade.subject} added successfully. CGPA: ${this.userservice.calculateCGPA()}`;
     }
+    
 
-    @Get('calculate-cgpa')
+    @Get('cgpa')
     calculateCGPA(): number {
         return this.userservice.calculateCGPA();
     }
-    @Get('me')
-    getMe(@GetUser() user: User){
-        return user;
+
+    @Patch('me/password')
+    updatePassword(@GetUser() user: User, dto:PasswordUpdateDto){
+        return this.userservice.updatePassword(user,dto);
+    }
+
+    @Patch('me/profile')
+    updateProfile(@GetUser() user, dto:ProfileUpdateDto){
+        return this.userservice.updateProfile(user,dto);
+    }
+
+    @Patch('me/grade')
+    updateGradingSystem(@GetUser() user, dto: GradeSystemUpdateDto){
+
     }
 }

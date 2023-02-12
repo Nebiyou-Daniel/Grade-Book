@@ -43,6 +43,12 @@ html {
 .text-color-quaternary {
   color: var(--quaternary-text-color) !important;
 }
+
+*:focus {
+  outline: 2px solid var(--tertiary-bg-color) !important;
+  outline-offset: 1px;
+}
+
 /* index.html */
 .navbar {
   max-height: 4rem !important;
@@ -86,7 +92,7 @@ html {
 }
 
 .bg-image--blurred {
-  background-image: url("../images/graduating students.png");
+  background-image: url('../images/graduating students.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -96,7 +102,7 @@ html {
 .bg-image--blurred::after {
   background-color: #ecefff7b;
   z-index: -1;
-  content: "";
+  content: '';
   display: block;
   height: 100%;
   position: absolute;
@@ -116,8 +122,8 @@ html {
   font-size: 2em;
 }
 
-.swipeLeft{
-  transition: width .3s;
+.swipeLeft {
+  transition: width 0.3s;
   transition-timing-function: ease-in-out;
 }
 
@@ -147,8 +153,9 @@ button {
   text-align: center;
 }
 
-.edit-btn , .delete-btn {
-    cursor: pointer;
+.edit-btn,
+.delete-btn {
+  cursor: pointer;
 }
 
 label {
@@ -167,7 +174,6 @@ label {
   align-items: center;
 }
 
-
 .popup {
   background-color: white;
   padding: 20px;
@@ -180,3 +186,25 @@ label {
 .popup-background {
   z-index: 9999;
 }
+
+
+
+/* error and success message containers */
+
+#error-popup, #message-container {
+  display: none;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+
+
+/* error and success messages */
+#message-box, .error-message {
+  position: absolute;
+  min-width: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+}
+
