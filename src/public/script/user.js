@@ -53,7 +53,7 @@ function displayErrorMessage(errorContent) {
 }
 
 // displaySuccessMessage("Course Deleted Successfully. ")
-displayErrorMessage('Error test message  ')
+// displayErrorMessage('Error test message  ')
 const editButton = document.createElement('img')
 editButton.classList.add('edit-btn', 'cursor');
 editButton.setAttribute('src', "images/edit.png");
