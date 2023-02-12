@@ -13,6 +13,7 @@ export class UserDto {
     score: string;
     
     @IsNotEmpty()
-    @IsNumber()    
-    credit: number;
+    @IsString()    
+    credit: string;
+
 }

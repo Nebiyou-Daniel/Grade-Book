@@ -27,14 +27,12 @@ model User {
 
 model Course {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   year     Int
   semester Int
 
   courseName String @unique
-  credit     Int
+  credit     String
   score      String
 
   userId Int

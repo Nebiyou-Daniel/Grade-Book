@@ -32,7 +32,7 @@ export class AuthService {
         }catch (error){
             if(error instanceof Prisma.PrismaClientKnownRequestError){
                 if(error.code === 'P2002'){
-                    throw new ForbiddenException(`the ${error.meta.target} credential has been taken`)
+                    throw new ForbiddenException(`this ${error.meta.target} credential has been taken`)
                 }
             }
             throw error
@@ -74,7 +74,7 @@ export class AuthService {
         }
         const secret = this.config.get('JWT_SECRET')
         const token = await this.jwt.signAsync(payload, {
-            expiresIn: '15m',
+            expiresIn: '45m',
             secret: secret,
          },
         );

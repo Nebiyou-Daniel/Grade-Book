@@ -8,7 +8,7 @@ import { PrismaClient, User } from '@prisma/client';
 export interface Grade {
     subject: string;
     score: string;
-    credit: number;
+    credit: string;
   }
   
 @Injectable()
@@ -34,8 +34,8 @@ export class UserService {
         let totalgrade = 0;
         let totalcredithours = 0;
         for (const grade of this.grades) {
-          totalgrade += parseFloat(grade.score) * grade.credit;
-          totalcredithours += grade.credit;
+          totalgrade += parseFloat(grade.score) * parseInt(grade.credit);
+          totalcredithours += parseInt(grade.credit);
         }
         return totalgrade / totalcredithours;
       }
