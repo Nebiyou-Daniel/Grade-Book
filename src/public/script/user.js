@@ -52,7 +52,7 @@ function displayErrorMessage(errorContent) {
     }, 3000);
 }
 
-// displaySuccessMessage('success')
+displaySuccessMessage("Course Deleted Successfully. ")
 // displayErrorMessage('Error')
 const editButton = document.createElement('img')
 editButton.classList.add('edit-btn', 'cursor');
@@ -339,9 +339,6 @@ table.addEventListener("click", event => {
 
                 deletePopup.classList.add("hidden");
 
-                // for debudding purpose
-                console.log(deleteCourseName.innerHTML);
-
                 await deleteCourseFetch(deleteCourseName.innerHTML);
             });
         }
@@ -378,7 +375,7 @@ async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, 
         reload();
         displaySuccessMessage("Course Edited Successfully. ")
     } else {
-        displayErrorMessage("Failed to edit the selected course. ")
+        displayErrorMessage(`Failed to edit the selected course. `)
         return;
     }
 }
@@ -403,7 +400,7 @@ async function deleteCourseFetch(deleteCourseName) {
         reload();
         displaySuccessMessage("Course Deleted Successfully. ")
     } else {
-        displayErrorMessage("Failed to delete the selected course. ")
+        displayErrorMessage(`Failed to delete the selected course. `)
         return ;
     }
 }
@@ -438,7 +435,7 @@ async function addCourseFetch(courseName, courseGrade, creditHours, year, semest
         reload();
         displaySuccessMessage("Course added successfully. ")
     } else {
-        displayErrorMessage("Failed to add course.")
+        displayErrorMessage(`Failed to add course.`)
         return ;
     }
 }

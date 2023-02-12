@@ -92,7 +92,7 @@ html {
 }
 
 .bg-image--blurred {
-  background-image: url("../images/graduating students.png");
+  background-image: url('../images/graduating students.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -102,7 +102,7 @@ html {
 .bg-image--blurred::after {
   background-color: #ecefff7b;
   z-index: -1;
-  content: "";
+  content: '';
   display: block;
   height: 100%;
   position: absolute;
@@ -122,8 +122,8 @@ html {
   font-size: 2em;
 }
 
-.swipeLeft{
-  transition: width .3s;
+.swipeLeft {
+  transition: width 0.3s;
   transition-timing-function: ease-in-out;
 }
 
@@ -153,8 +153,9 @@ button {
   text-align: center;
 }
 
-.edit-btn , .delete-btn {
-    cursor: pointer;
+.edit-btn,
+.delete-btn {
+  cursor: pointer;
 }
 
 label {
@@ -186,26 +187,6 @@ label {
   z-index: 9999;
 }
 
-
-/* error messages to popup */
-
-.message-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-}
-
-.message-container.displayed {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* success message */
 #message-container {
   position: fixed;
@@ -231,33 +212,33 @@ label {
   border-radius: 10px;
   text-align: center;
 }
-  .error-popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-  }
-  
-  .error-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #ff7171;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #000;
-    color: #fff;
-  }
-  
-  #error-text {
-    font-size: 18px;
-    text-align: center;
-  }
-  
-  
+
+/* error message */
+.error-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.error-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ff7171;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #000;
+  color: #fff;
+}
+
+#error-text {
+  font-size: 18px;
+  text-align: center;
+}
