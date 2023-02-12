@@ -16,25 +16,25 @@ export class CourseController {
         return this.courseService.getCourse(userId);
     }
 
-    @Get(':id')
-    getourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number){
+    @Get('getCourse')
+    getcourseByName(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number){
         return this.courseService.getCourseById(userId, courseId);
 
     }
 
-    @Post()
+    @Post('addCourse')
     addCourse(@GetUser('id') userId: number, @Body() dto: AddCourseDto){
         return this.courseService.addCourse(userId, dto);
 
     }
 
-    @Patch(':id')
+    @Patch('editCourse')
     editCourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number, @Body() dto: EditCourseDto){
         return this.courseService.editCourseById(userId, courseId, dto);
 
     }
 
-    @Delete(':id')
+    @Delete('deleteCourse')
     removeCourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number){
 
     }

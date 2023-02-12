@@ -113,7 +113,7 @@ async function reload() {
  */
 async function getCourses() {
     // fetch grades
-    const response = await fetch('http:localhost:3003/user/course', {
+    const response = await fetch('http:localhost:3003/courses', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -366,7 +366,7 @@ table.addEventListener("click", event => {
  * @returns 
  */
 async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, editGrade) {
-    const response = await fetch('http:localhost:3003/user/course/edit', {
+    const response = await fetch('http:localhost:3003/courses/', {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -391,7 +391,7 @@ async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, 
  * deletes course from course in the user grades.
  */
 async function deleteCourseFetch(deleteCourseName) {
-    const response = await fetch('http:localhost:3003/user/course/delete', {
+    const response = await fetch('http:localhost:3003/courses', {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -426,7 +426,7 @@ addCourseBtn.addEventListener('click', async function () {
 })
 
 async function addCourseFetch(courseName, courseGrade, creditHours, year, semester) {
-    const response = await fetch('http:localhost:3003/user/course/add', {
+    const response = await fetch('http:localhost:3003/courses/', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

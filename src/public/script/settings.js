@@ -67,7 +67,7 @@ async function update() {
 
 
 document.getElementById("updateProfile").addEventListener('click', async () => {
-    if (validateForm()) {
+    if (validateFormProfile()) {
         const response = await fetch('http:localhost:3003/user/me', {
             method: "PATCH",
             headers: {
@@ -87,8 +87,40 @@ document.getElementById("updateProfile").addEventListener('click', async () => {
 })
 
 
-function validateForm() {
+
+/**
+ * 
+ */
+document.getElementById("updatePassword").addEventListener('click', async() => {
+    if (validateFormPassword()) {
+        const response = await fetch('http:localhost:3003/user/me/password', {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            },
+            body: JSON.stringify({ oldPassword: document.getElementById("oldpassword"), newPassword: document.getElementById("newPassword")})
+        });
+        
+        const data = await response.json();
+
+        if (response.ok) {
+            displaySuccessMessage("Password updated successfully!");
+        } else {
+            console.log("Invlialid credentials !");
+        }
+    }
+})
+
+function validateFormProfile() {
     if (fullName.value == "") {
         return false;
     }
+}
+
+
+function validateFormPassword() {
+    if (document.getElementById("newpassword") !== document.getElementById("confirmpassword")){
+        return false;
+    } return true;
 }
