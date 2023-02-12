@@ -1,5 +1,7 @@
 
 
+// dom elements
+
 const table = document.querySelector('#myTable');
 const rows = table.querySelectorAll('tbody tr');
 const editButtons = table.querySelectorAll('.edit-btn');
@@ -10,7 +12,7 @@ const semesterTwo = document.getElementById('semTwo');
 const addCourseBtn = document.getElementById('addCourse');
 const form = document.getElementById('form');
 const tbody = document.getElementById('table-body');
-const username = document.getElementById('userName');
+const userName = document.getElementById('userName');
 const cgpa = document.getElementById('cgpa');
 const semesterGpa = document.getElementById('gpa')
 
@@ -36,7 +38,8 @@ deleteButton.setAttribute('src', "images/delete.png");
 
 const token = localStorage.getItem('token');
 
-// on startup
+// on startup do these
+// get the name, all grades, all gpa, cgpa, 
 getName();
 reload();
 
@@ -45,102 +48,127 @@ form.addEventListener('submit', function (event) {
 })
 
 let yearData = {
-    '01': {
-        courses: [],
-        gpa: 0
-    },
-    '02': {
-        courses: [],
-        gpa: 0
-    },
-    '11': {
-        courses: [],
-        gpa: 0
-    },
-    '12': {
-        courses: [],
-        gpa: 0
-    },
-    '21': {
-        courses: [],
-        gpa: 0
-    },
-    '22': {
-        courses: [],
-        gpa: 0
-    },
-    '31': {
-        courses: [],
-        gpa: 0
-    },
-    '32': {
-        courses: [],
-        gpa: 0
-    },
-    '41': {
-        courses: [],
-        gpa: 0
-    },
-    '42': {
-        courses: [],
-        gpa: 0
-    },
-    '51': {
-        courses: [],
-        gpa: 0
-    },
-    '52': {
-        courses: [],
-        gpa: 0
-    }
+    '11': { courses: [['course', '5', 'A+'], ['computer Architecture', '7', 'A-']] },
+    '12': { courses: [] },
+    '21': { courses: [] },
+    '22': { courses: [] },
+    '31': { courses: [] },
+    '32': { courses: [] },
+    '41': { courses: [] },
+    '42': { courses: [] },
+    '51': { courses: [] },
+    '52': { courses: [] },
+}
+let gpaData = {
+    '11': { gpa: 0 },
+    '12': { gpa: 0 },
+    '21': { gpa: 0 },
+    '22': { gpa: 0 },
+    '31': { gpa: 0 },
+    '32': { gpa: 0 },
+    '41': { gpa: 0 },
+    '42': { gpa: 0 },
+    '51': { gpa: 0 },
+    '52': { gpa: 0 }
+}
+updateTable();
+
+/**
+ * gets course names, gpa and cgpa, then update the table to the current values in the yearData
+ */
+async function reload() {
+    await getCourses();
+    await updateTable();
+    await getcgpa();
 }
 
-async function reload() {
+/**
+ * @returns void, sets the yearData to the course of the current user's data
+ */
+async function getCourses() {
     // fetch grades
-    const response = await fetch('localhost:3003/user', {
+    const response = await fetch('http:localhost:3003/user/course', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userName, email, password, universityName, studyLevel }),
     });
     const data = await response.json();
 
     if (data.success) {
         yearData = data.grades;
-        cgpa.innerHTML = data.cgpa;
-
     } else {
         console.log("unable to fetch data");
         return;
     }
-    updateTable();
+    await getgpa();
+    await updateTable();
 }
 
 
-// fetchName
+
+/**
+ * 
+ * @returns void, sets the name at the top right nav to the user's first Name.
+ */
 async function getName() {
 
-    const response = await fetch('localhost:3003/auth/login', {
+    const response = await fetch('http:localhost:3003/user/me', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userName, email, password, universityName, studyLevel }),
     });
     const data = await response.json();
-    console.log(data);
 
-    if (data.success) {
-        userName.innerHTML = data.data.name;
+
+    if (response.ok) {
+        userName.innerHTML = (data.fullName).split(' ')[0];
     } else {
+        userName.innerHTML = '_';
         console.log("unable to fetch userName");
-        return ;
+        return;
     }
 }
 
+/**
+ * @return void: updates the gpaData to the current user gpa
+ */
+async function getgpa() {
+    const response = await fetch('http:localhost:3003/gpa', {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+        gpaData = data.gpa;
+    }
+}
+
+
+/**
+ * @return void: sets the cgpa's innertext to the current user cgpa
+ */
+async function getcgpa() {
+    const response = await fetch('http:localhost:3003/cgpa', {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+        cgpa.innerHTML = data.cgpa;
+    }
+}
 
 /**
  * @returns array query, query[0] = the selected year and query[1] = selected semester.
@@ -164,10 +192,14 @@ function currSelected() {
     return query;
 }
 
-
-function updateTable() {
+/**
+ * @returns Void: updates the tables in the current table,and 
+ * fills it with the data that is the currently selected table grades and courses
+ */
+async function updateTable() {
     // check which year and semester is checked
-    let yearSem = currSelected()[0] + currSelected()[1];
+    let currSelect = currSelected();
+    let yearSem = currSelect[0] + currSelect[1];
 
     // render table by values at the yearData
     tbody.innerHTML = '';
@@ -175,10 +207,10 @@ function updateTable() {
     let rowsData = yearData[yearSem].courses;
 
     if (rowsData.length === 0) {
-        tbody.innerHTML = "<i>EMPTY: insert data</i>";
+        tbody.innerHTML = "<p>EMPTY : Insert data !</p>";
         return;
     }
-    // here goes nothing
+    // iterating through the year data, creatig rows on the way.
     for (let i = 0; i < rowsData.length; i++) {
         let rowData = rowsData[i];
         let tr = document.createElement('tr');
@@ -208,7 +240,7 @@ function updateTable() {
         tr.appendChild(delBtn);
         tbody.appendChild(tr);
     }
-    semesterGpa.innerText = yearData[yearSem].gpa;
+    semesterGpa.innerText = gpaData[yearSem];
 }
 
 
@@ -221,6 +253,8 @@ const cancelBtn = document.querySelector("#cancel-edit");
 const okDelete = document.querySelector("#ok-delete");
 const cancelDelete = document.querySelector("#cancel-delete");
 
+// flags to ensure that the addEventListener is done only once, to 
+// avoid multiple listeners that would messup our operation
 let isOkEditClicked = false;
 let isCancelBtnClicked = false;
 let isOkDeleteClicked = false;
@@ -250,10 +284,13 @@ table.addEventListener("click", event => {
         editGrade.value = column3.innerText;
 
         if (!isOkEditClicked) {
-            okEdit.addEventListener("click", () => {
+            okEdit.addEventListener("click", async () => {
                 isOkEditClicked = true;
 
-                editCourseFetch(prevCourseName, editCourseName.value, editCreditHours.value, editGrade.value)
+                // for debudding purpose
+                console.log(prevCourseName.innerHTML, editCourseName.value, editCreditHours.value, editGrade.value);
+
+                await editCourseFetch(prevCourseName.innerHTML, editCourseName.value, editCreditHours.value, editGrade.value)
                 editPopup.classList.add("hidden");
             });
         }
@@ -272,11 +309,15 @@ table.addEventListener("click", event => {
         deletePopup.classList.remove("hidden");
 
         if (!isOkDeleteClicked) {
-            okDelete.addEventListener("click", () => {
+            okDelete.addEventListener("click", async () => {
                 isOkDeleteClicked = true;
 
                 deletePopup.classList.add("hidden");
-                deleteCourseFetch(deleteCourseName);
+
+                // for debudding purpose
+                console.log(deleteCourseName.innerHTML);
+
+                await deleteCourseFetch(deleteCourseName.innerHTML);
             });
         }
 
@@ -289,9 +330,16 @@ table.addEventListener("click", event => {
     }
 });
 
-
+/**
+ * 
+ * @param {String} prevCourseName
+ * @param {String} editCourseName 
+ * @param {String} editCreditHours 
+ * @param {String} editGrade 
+ * @returns 
+ */
 async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, editGrade) {
-    const response = await fetch('localhost:3003/api/course/edit', {
+    const response = await fetch('http:localhost:3003/user/course/edit', {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -299,19 +347,23 @@ async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, 
         },
         body: JSON.stringify({ prevCourseName, editCourseName, editCreditHours, editGrade }),
     });
-    const data = await response.json();
 
-    if (data.success) {
+    if (response.ok) {
         reload();
-
     } else {
-        console.log("unable to edit data");
+        alert("failed to edit data");
         return;
     }
 }
 
+/**
+ * 
+ * @param {String} deleteCourseName 
+ * @returns void
+ * deletes course from course in the user grades.
+ */
 async function deleteCourseFetch(deleteCourseName) {
-    const response = await fetch('localhost:3003/api/course/delete', {
+    const response = await fetch('http:localhost:3003/user/course/delete', {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -319,47 +371,45 @@ async function deleteCourseFetch(deleteCourseName) {
         },
         body: JSON.stringify({ deleteCourseName }),
     });
-    const data = await response.json();
 
-    if (data.success) {
+    if (response.ok) {
         reload();
     } else {
-        console.log("unable to delete data");
+        console.log("failed to delete data");
         return;
     }
 }
 
 
 // addcourse
-addCourseBtn.addEventListener('click', function () {
+addCourseBtn.addEventListener('click', async function () {
     const yearSelected = currSelected()['0'];
     const semSelected = currSelected()['1'];
-    
-    if (creditHours.value=="", courseName.value=="", courseGrade.value == ""){
+
+    if (creditHours.value == "", courseName.value == "", courseGrade.value == "") {
         return false;
     }
     if (yearSelected == 0) {
         console.log('select appropriate year');
     } else {
-        addCourseFetch(courseName.value, courseGrade.value, creditHours.value, yearSelected, semSelected);
+        await addCourseFetch(courseName.value, courseGrade.value, creditHours.value, yearSelected, semSelected);
     }
 })
 
-async function addCourseFetch (courseName, courseGrade, creditHours, year, semester) {
-    const response = await fetch('localhost:3003/api/course/add', {
-        method: "PATCH",
+async function addCourseFetch(courseName, courseGrade, creditHours, year, semester) {
+    const response = await fetch('http:localhost:3003/user/course/add', {
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ courseName, courseGrade, creditHours, year, semester}),
+        body: JSON.stringify({ courseName, courseGrade, creditHours, year, semester }),
     });
-    const data = await response.json();
 
-    if (data.success) {
+    if (response.ok) {
         reload();
     } else {
-        console.log("unable to add data");
+        console.log("failed to add course");
         return;
     }
 }
