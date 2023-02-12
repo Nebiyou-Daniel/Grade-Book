@@ -9,31 +9,53 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
 model User {
   id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
-  fullName String
-  email String @unique 
-  password String
+  fullName       String
+  email          String @unique
+  password       String
+  universityName String
+  cgpa           String @default(value: "'0'")
 
   courses Course[]
+  Grade   Grade[]
 
   @@map("users")
 }
 
-
 model Course {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  universityName String
+  year     Int
+  semester Int
 
   courseName String @unique
-  credit String
-  grade String
+  credit     Int
+  score      String
 
   userId Int
-  user User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
+
+  @@map("courses")
+}
+
+model Grade {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  A       String @default(value: "'4.0'")
+  A_minus String @default(value: "'3.75'")
+  B_plus  String @default(value: "'3.5'")
+  B       String @default(value: "'3.25'")
+  B_minus String @default(value: "'3.0'")
+  C_plus  String @default(value: "'2.75'")
+  C       String @default(value: "'2.5'")
+  C_minus String @default(value: "'2.0'")
+  D       String @default(value: "'1.75'")
+  F       String @default(value: "'1.50'")
 }
