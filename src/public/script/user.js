@@ -62,7 +62,7 @@ const deleteButton = document.createElement('img')
 deleteButton.classList.add('delete-btn', 'cursor');
 deleteButton.setAttribute('src', "images/delete.png");
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('access_token');
 
 // on startup do these
 // get the name, all grades, all gpa, cgpa, 
