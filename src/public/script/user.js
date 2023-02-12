@@ -31,15 +31,15 @@ radioButtons.forEach(radioButton => {
 function displaySuccessMessage(messageContent) {
     let messageText = document.getElementById("message-text");
     messageText.innerHTML = messageContent;
-  
+
     let messageContainer = document.getElementById("message-container");
     messageContainer.style.display = "block";
-  
+
     setTimeout(function () {
-      messageContainer.style.display = "none";
+        messageContainer.style.display = "none";
     }, 2000);
-  }
-  
+}
+
 function displayErrorMessage(errorContent) {
     const errorPopup = document.getElementById("error-popup");
     const errorText = document.getElementById("error-text");
@@ -53,7 +53,7 @@ function displayErrorMessage(errorContent) {
 }
 
 // displaySuccessMessage("Course Deleted Successfully. ")
-displayErrorMessage('Error test message  ')
+// displayErrorMessage('Error test message  ')
 const editButton = document.createElement('img')
 editButton.classList.add('edit-btn', 'cursor');
 editButton.setAttribute('src', "images/edit.png");
@@ -86,16 +86,16 @@ let yearData = {
     '52': { courses: [] },
 }
 let gpaData = {
-    '11': { gpa: 0 },
-    '12': { gpa: 0 },
-    '21': { gpa: 0 },
-    '22': { gpa: 0 },
-    '31': { gpa: 0 },
-    '32': { gpa: 0 },
-    '41': { gpa: 0 },
-    '42': { gpa: 0 },
-    '51': { gpa: 0 },
-    '52': { gpa: 0 }
+    '11':  5,
+    '12':  3,
+    '21':  4,
+    '22':  6,
+    '31':  7,
+    '32':  8,
+    '41':  3,
+    '42':  7,
+    '51':  2,
+    '52':  5
 }
 
 /**
@@ -104,6 +104,7 @@ let gpaData = {
 async function reload() {
     await getCourses();
     await getcgpa();
+    await getgpa();
     await updateTable();
 }
 
@@ -222,18 +223,22 @@ function currSelected() {
  * fills it with the data that is the currently selected table grades and courses
  */
 async function updateTable() {
+
     // check which year and semester is checked
     let currSelect = currSelected();
     let yearSem = currSelect[0] + currSelect[1];
 
+    // set current year, semester gpa
+    semesterGpa.innerText = gpaData[yearSem];
+    
     // render table by values at the yearData
     tbody.innerHTML = '';
 
     let rowsData = yearData[yearSem].courses;
 
     if (rowsData.length === 0) {
-        tbody.innerHTML = "<p>EMPTY : Insert data !</p>";
-        return;
+        tbody.innerHTML = "<p>EMPTY : Insert Course !</p>";
+        return ;
     }
     // iterating through the year data, creatig rows on the way.
     for (let i = 0; i < rowsData.length; i++) {
@@ -265,7 +270,6 @@ async function updateTable() {
         tr.appendChild(delBtn);
         tbody.appendChild(tr);
     }
-    semesterGpa.innerText = gpaData[yearSem];
 }
 
 
@@ -368,7 +372,7 @@ async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, 
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ prevCourseName, editCourseName, editCreditHours, editGrade, token }),
+        body: JSON.stringify({ prevCourseName, editCourseName, editCreditHours, editGrade }),
     });
 
     if (response.ok) {
@@ -401,7 +405,7 @@ async function deleteCourseFetch(deleteCourseName) {
         displaySuccessMessage("Course Deleted Successfully. ")
     } else {
         displayErrorMessage(`Failed to delete the selected course. `)
-        return ;
+        return;
     }
 }
 
@@ -436,7 +440,7 @@ async function addCourseFetch(courseName, courseGrade, creditHours, year, semest
         displaySuccessMessage("Course added successfully. ")
     } else {
         displayErrorMessage(`Failed to add course.`)
-        return ;
+        return;
     }
 }
 
