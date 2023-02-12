@@ -23,6 +23,7 @@ export class AuthService {
                     email: dto.email,
                     fullName: dto.fullName,
                     password,
+                    universityName:"AAU"
                 }
             })
 

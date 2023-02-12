@@ -27,17 +27,17 @@ export class UserController {
     }
 
     @Patch('me/password')
-    updatePassword(@GetUser() user: User, dto:PasswordUpdateDto){
+    updatePassword(@GetUser() user: User, @Body() dto:PasswordUpdateDto){
         return this.userservice.updatePassword(user,dto);
     }
 
     @Patch('me/profile')
-    updateProfile(@GetUser() user, dto:ProfileUpdateDto){
+    updateProfile(@GetUser() user, @Body() dto:ProfileUpdateDto){
         return this.userservice.updateProfile(user,dto);
     }
 
     @Patch('me/grade')
-    updateGradingSystem(@GetUser() user, dto: GradeSystemUpdateDto){
-
+    updateGradingSystem(@GetUser() user, @Body() dto: GradeSystemUpdateDto){
+        return this.userservice.updateGradingSystem(user,dto);
     }
 }
