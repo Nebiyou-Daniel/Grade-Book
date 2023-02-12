@@ -24,6 +24,7 @@ export class AuthService {
                     fullName: dto.fullName,
                     universityName: dto.universityName,
                     password,
+                    universityName:"AAU"
                 }
             })
 
