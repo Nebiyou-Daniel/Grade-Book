@@ -93,7 +93,7 @@ createAcc.addEventListener("click", async function () {
     if (universityName.value == "") {
         return;
     }
-    // create user
+    // create user fetch
     // requestbody: name, email, password, universityName, Study Level
     const response = await fetch('localhost:3003/auth/signup', {
         method: "POST",
