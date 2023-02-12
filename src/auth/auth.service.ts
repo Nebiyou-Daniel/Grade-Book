@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt/dist';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { Prisma } from "@prisma/client";
 import * as argon from 'argon2';
 import { ConfigService } from '@nestjs/config';
 
@@ -29,7 +29,7 @@ export class AuthService {
             // return the saved user
             return this.signToken(user.id, user.email);            
         }catch (error){
-            if(error instanceof PrismaClientKnownRequestError){
+            if(error instanceof Prisma.PrismaClientKnownRequestError){
                 if(error.code === 'P2002'){
                     throw new ForbiddenException(`the ${error.meta.target} credential has been taken`)
                 }
