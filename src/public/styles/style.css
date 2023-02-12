@@ -187,58 +187,21 @@ label {
   z-index: 9999;
 }
 
-/* success message */
-#message-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.7);
-  display: none;
-  z-index: 999;
-}
 
-#message-box {
-  position: absolute;
-  top: 50%;
-  border: 1px solid black;
-  left: 50%;
-  min-width: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #eeffeea5;
-  color: green;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-}
 
-/* error message */
-.error-popup {
+/* error and success message containers */
+
+#error-popup, #message-container {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
 }
 
-.error-message {
+/* error and success messages */
+#message-box, .error-message {
   position: absolute;
-  top: 50%;
-  left: 50%;
   min-width: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ff7171;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #000;
-  color: #fff;
-}
-
-#error-text {
-  font-size: 18px;
-  text-align: center;
 }

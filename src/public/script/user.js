@@ -49,11 +49,11 @@ function displayErrorMessage(errorContent) {
 
     setTimeout(function () {
         errorPopup.style.display = "none";
-    }, 3000);
+    }, 2000);
 }
 
 displaySuccessMessage("Course Deleted Successfully. ")
-// displayErrorMessage('Error')
+// displayErrorMessage('Error test message  ')
 const editButton = document.createElement('img')
 editButton.classList.add('edit-btn', 'cursor');
 editButton.setAttribute('src', "images/edit.png");
