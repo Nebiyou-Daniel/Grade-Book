@@ -1,6 +1,6 @@
 
 
-// dom elements
+// dom elements needed
 
 const table = document.querySelector('#myTable');
 const rows = table.querySelectorAll('tbody tr');
@@ -91,25 +91,6 @@ form.addEventListener('submit', function (event) {
 
 
 
-let yearDatas = {
-    '11': [
-        {
-            courseName: "name",
-            grade: 'A+',
-            creditHours: 4,
-            year: 3,
-            semester: 4,
-        },
-        {
-            courseName: "abebe",
-            grade: 'A-',
-            creditHours: 6,
-            year: 1,
-            semester: 2,
-        },
-    ]
-}
-
 
 let yearData = {
     '11': [['course', '5', 'A+'], ['computer Architecture', '7', 'A-']],
@@ -130,7 +111,6 @@ let yearData = {
  */
 function updateYeardata(courses) {
     // reset the yeardata
-    console.log(yearData)
     for (key in yearData) {
         while (yearData[key].length > 0) {
             yearData[key].pop();
@@ -140,7 +120,7 @@ function updateYeardata(courses) {
     // for each course add it to the right key
     let newCourseList;
     let yearSem;
-    for (course of courses) {
+    for (let course of courses) {
         newCourseList = [],
             newCourseList.push(course.courseName)
         newCourseList.push(course.creditHours)
@@ -154,16 +134,16 @@ function updateYeardata(courses) {
 }
 
 let gpaData = {
-    '11': 5,
-    '12': 3,
-    '21': 4,
-    '22': 6,
-    '31': 7,
-    '32': 8,
-    '41': 3,
-    '42': 7,
-    '51': 2,
-    '52': 5
+    '11': "0",
+    '12': "0",
+    '21': "0",
+    '22': "0",
+    '31': "0",
+    '32': "0",
+    '41': "0",
+    '42': "0",
+    '51': "0",
+    '52': "0"
 }
 
 /**
@@ -180,7 +160,7 @@ async function reload() {
  * @returns void, sets the yearData to the course of the current user's data
  */
 async function getCourses() {
-    // fetch grades
+    // fetch courses
     const response = await fetch('http:localhost:3003/courses', {
         method: "GET",
         headers: {
@@ -222,7 +202,6 @@ async function getMe() {
     } else {
         userName.innerHTML = '...';
         console.log("unable to fetch userName");
-        return;
     }
 }
 
@@ -230,7 +209,7 @@ async function getMe() {
  * @return void: updates the gpaData to the current user gpa
  */
 async function getgpa() {
-    const response = await fetch('http:localhost:3003/gpa', {
+    const response = await fetch('http:localhost:3003/courses/gpa', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -249,7 +228,7 @@ async function getgpa() {
  * @return void: sets the cgpa's innertext to the current user cgpa
  */
 async function getcgpa() {
-    const response = await fetch('http:localhost:3003/cgpa', {
+    const response = await fetch('http:localhost:3003/courses/cgpa', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -318,7 +297,6 @@ async function updateTable() {
             let td = document.createElement('td');
             td.textContent = cellData;
             tr.appendChild(td);
-            // console.log(1);
         }
         // creating the buttons
         let editButton = document.createElement('img')
@@ -477,7 +455,7 @@ async function deleteCourseFetch(deleteCourseName) {
 }
 
 
-// addcourse
+// add course button 
 addCourseBtn.addEventListener('click', async function () {
     const yearSelected = currSelected()['0'];
     const semSelected = currSelected()['1'];
@@ -485,11 +463,8 @@ addCourseBtn.addEventListener('click', async function () {
     if (creditHours.value == "", courseName.value == "", courseGrade.value == "") {
         return false;
     }
-    if (yearSelected == 0) {
-        console.log('select appropriate year');
-    } else {
-        await addCourseFetch(courseName.value, courseGrade.value, creditHours.value, yearSelected, semSelected);
-    }
+
+    await addCourseFetch(courseName.value, courseGrade.value, creditHours.value, yearSelected, semSelected);
 })
 
 async function addCourseFetch(courseName, courseGrade, creditHours, year, semester) {

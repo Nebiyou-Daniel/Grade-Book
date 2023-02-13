@@ -5,9 +5,32 @@ const password = document.getElementById("password");
 const nextBtn = document.getElementById('nextBtn');
 const backBtn = document.getElementById('backBtn');
 const createAcc = document.getElementById("createAcc");
-const errorMessage = document.getElementById("errormessage");
 const universityName = document.getElementById("universityName");
 const studyLevel = document.getElementById("studyLevel");
+
+function displayErrorMessage(errorContent) {
+    const errorPopup = document.getElementById("error-popup");
+    const errorText = document.getElementById("error-text");
+
+    errorText.innerHTML = errorContent;
+    errorPopup.style.display = "block";
+
+    setTimeout(function () {
+        errorPopup.style.display = "none";
+    }, 2000);
+}
+
+function displayTop(message) {
+    const popup = document.getElementById("popup");
+    const messageElement = document.getElementById("message");
+
+    messageElement.innerText = message;
+    popup.style.display = "block";
+
+    setTimeout(function () {
+        popup.style.display = "none";
+    }, 4000);
+}
 
 
 
@@ -23,7 +46,8 @@ form2.addEventListener('submit', function (event) {
 
 nextBtn.addEventListener('click', async function () {
     const isValid = await validateForm1(userName.value, email.value, password.value);
-    if (isValid) { // slide form2 in
+    if (isValid) {
+        // slide form2 in
         console.log("valid")
         form1.style.display = "none";
         form2.style.display = 'block';
@@ -44,18 +68,16 @@ async function validateForm1(name, email, password) {
     console.log(name, email, password);
     // Check for name   
     if (name == "") {
-        console.log("invalid name");
         return false;
     }
 
     // Check if email is valid
     if (!emailRegEx.test(email)) {
-        console.log("invalid email");
         return false;
     }
 
     if (!passwordRegEx.test(password)) {
-        console.log("invalid password");
+        displayTop("Password Must have at least one of all the following: lowercase character, uppercase character, number, and symbol (!@#$%^&*)")
         return false;
     }
     return true;
@@ -71,7 +93,7 @@ createAcc.addEventListener("click", async function () {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fullName: userName.value, email: email.value, password : password.value, universityName : universityName.value }),
+        body: JSON.stringify({ fullName: userName.value, email: email.value, password: password.value, universityName: universityName.value }),
     });
 
     const data = await response.json();
@@ -80,8 +102,7 @@ createAcc.addEventListener("click", async function () {
         // redirect to the user page
         localStorage.setItem("access_token", data.access_token);
         window.location.href = "./user.html";
-        console.log("reached here!")
     } else {
-        console.log(data)
+        displayErrorMessage("Email is Already taken.")
     }
 })

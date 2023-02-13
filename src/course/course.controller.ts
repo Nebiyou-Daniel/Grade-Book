@@ -17,7 +17,6 @@ export class CourseController {
         return this.courseService.getCourse(userId);
     }
 
-
     @Get('cgpa')
     getCGPA(@GetUser('id') userId: number){
         return this.courseService.getCGPA(userId);
@@ -42,6 +41,7 @@ export class CourseController {
         return this.courseService.addCourse(userId, dto);
 
     }
+
 
     @Patch('/:id')
     editCourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number, @Body() dto: EditCourseDto){
