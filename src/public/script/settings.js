@@ -133,9 +133,6 @@ document.getElementById("updateProfile").addEventListener('click', async () => {
 
 
 
-/**
- * 
- */
 document.getElementById("updatePassword").addEventListener('click', async () => {
     if (validateFormPassword()) {
         const response = await fetch('http:localhost:3003/user/updatePassword', {
@@ -147,7 +144,7 @@ document.getElementById("updatePassword").addEventListener('click', async () => 
             body: JSON.stringify({ oldPassword: document.getElementById("oldpassword"), newPassword: document.getElementById("newpassword") })
         });
 
-        if (response.status >= 200 || response.status <= 300) {
+        if (response.ok) {
             displaySuccessMessage("Password updated successfully!");
             document.getElementById("oldpassword").value = "";
             document.getElementById("newpassword").value = "";
@@ -182,7 +179,7 @@ document.getElementById("updateGradingSystem").addEventListener("click", async (
         })
     });
 
-    if (response.status >= 200 || response.status <= 300) {
+    if (response.ok) {
         displaySuccessMessage("Grading System Updated suceesfully");
     } else {
         displayErrorMessage("Failed to Update Grading System");
