@@ -14,10 +14,14 @@ model User {
   id Int @id @default(autoincrement())
 
   fullName       String
-  email          String @unique
+  email          String  @unique
   password       String
   universityName String?
+<<<<<<< HEAD
   cgpa           String @default(value: "'0'")
+=======
+  cgpa           String  @default(value: "'0'")
+>>>>>>> main
 
   courses Course[]
   Grade   Grade[]
