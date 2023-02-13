@@ -28,6 +28,32 @@ radioButtons.forEach(radioButton => {
 });
 
 
+function displaySuccessMessage(messageContent) {
+    let messageText = document.getElementById("message-text");
+    messageText.innerHTML = messageContent;
+
+    let messageContainer = document.getElementById("message-container");
+    messageContainer.style.display = "block";
+
+    setTimeout(function () {
+        messageContainer.style.display = "none";
+    }, 2000);
+}
+
+function displayErrorMessage(errorContent) {
+    const errorPopup = document.getElementById("error-popup");
+    const errorText = document.getElementById("error-text");
+
+    errorText.innerHTML = errorContent;
+    errorPopup.style.display = "block";
+
+    setTimeout(function () {
+        errorPopup.style.display = "none";
+    }, 2000);
+}
+
+// displaySuccessMessage("Course Deleted Successfully. ")
+// displayErrorMessage('Error test message  ')
 const editButton = document.createElement('img')
 editButton.classList.add('edit-btn', 'cursor');
 editButton.setAttribute('src', "images/edit.png");
@@ -60,26 +86,26 @@ let yearData = {
     '52': { courses: [] },
 }
 let gpaData = {
-    '11': { gpa: 0 },
-    '12': { gpa: 0 },
-    '21': { gpa: 0 },
-    '22': { gpa: 0 },
-    '31': { gpa: 0 },
-    '32': { gpa: 0 },
-    '41': { gpa: 0 },
-    '42': { gpa: 0 },
-    '51': { gpa: 0 },
-    '52': { gpa: 0 }
+    '11':  5,
+    '12':  3,
+    '21':  4,
+    '22':  6,
+    '31':  7,
+    '32':  8,
+    '41':  3,
+    '42':  7,
+    '51':  2,
+    '52':  5
 }
-updateTable();
 
 /**
  * gets course names, gpa and cgpa, then update the table to the current values in the yearData
  */
 async function reload() {
     await getCourses();
-    await updateTable();
     await getcgpa();
+    await getgpa();
+    await updateTable();
 }
 
 /**
@@ -197,18 +223,22 @@ function currSelected() {
  * fills it with the data that is the currently selected table grades and courses
  */
 async function updateTable() {
+
     // check which year and semester is checked
     let currSelect = currSelected();
     let yearSem = currSelect[0] + currSelect[1];
 
+    // set current year, semester gpa
+    semesterGpa.innerText = gpaData[yearSem];
+    
     // render table by values at the yearData
     tbody.innerHTML = '';
 
     let rowsData = yearData[yearSem].courses;
 
     if (rowsData.length === 0) {
-        tbody.innerHTML = "<p>EMPTY : Insert data !</p>";
-        return;
+        tbody.innerHTML = "<p>EMPTY : Insert Course !</p>";
+        return ;
     }
     // iterating through the year data, creatig rows on the way.
     for (let i = 0; i < rowsData.length; i++) {
@@ -240,7 +270,6 @@ async function updateTable() {
         tr.appendChild(delBtn);
         tbody.appendChild(tr);
     }
-    semesterGpa.innerText = gpaData[yearSem];
 }
 
 
@@ -314,9 +343,6 @@ table.addEventListener("click", event => {
 
                 deletePopup.classList.add("hidden");
 
-                // for debudding purpose
-                console.log(deleteCourseName.innerHTML);
-
                 await deleteCourseFetch(deleteCourseName.innerHTML);
             });
         }
@@ -329,6 +355,7 @@ table.addEventListener("click", event => {
         }
     }
 });
+
 
 /**
  * 
@@ -350,8 +377,9 @@ async function editCourseFetch(prevCourseName, editCourseName, editCreditHours, 
 
     if (response.ok) {
         reload();
+        displaySuccessMessage("Course Edited Successfully. ")
     } else {
-        alert("failed to edit data");
+        displayErrorMessage(`Failed to edit the selected course. `)
         return;
     }
 }
@@ -374,8 +402,9 @@ async function deleteCourseFetch(deleteCourseName) {
 
     if (response.ok) {
         reload();
+        displaySuccessMessage("Course Deleted Successfully. ")
     } else {
-        console.log("failed to delete data");
+        displayErrorMessage(`Failed to delete the selected course. `)
         return;
     }
 }
@@ -408,8 +437,9 @@ async function addCourseFetch(courseName, courseGrade, creditHours, year, semest
 
     if (response.ok) {
         reload();
+        displaySuccessMessage("Course added successfully. ")
     } else {
-        console.log("failed to add course");
+        displayErrorMessage(`Failed to add course.`)
         return;
     }
 }

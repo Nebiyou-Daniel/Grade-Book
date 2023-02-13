@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Patch } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
+import { PasswordUpdateDto, ProfileUpdateDto, GradeSystemUpdateDto } from './dto';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
@@ -25,5 +26,20 @@ export class UserController {
     @Get('cgpa')
     calculateCGPA(): number {
         return this.userservice.calculateCGPA();
+    }
+
+    @Patch('me/password')
+    updatePassword(@GetUser() user: User, dto:PasswordUpdateDto){
+        return this.userservice.updatePassword(user,dto);
+    }
+
+    @Patch('me/profile')
+    updateProfile(@GetUser() user, dto:ProfileUpdateDto){
+        return this.userservice.updateProfile(user,dto);
+    }
+
+    @Patch('me/grade')
+    updateGradingSystem(@GetUser() user, dto: GradeSystemUpdateDto){
+
     }
 }
