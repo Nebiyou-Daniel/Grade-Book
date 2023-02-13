@@ -1,12 +1,32 @@
+import { IsString,IsNotEmpty, IsOptional } from "class-validator"
 export class GradeSystemUpdateDto{
-    A:string
-    A_minus:string
-    B_plus:string
-    B:string
-    B_minus:string
-    C_plus:string
-    C:string
-    C_minus:string
-    D:string
-    F:string
+    @IsOptional()
+    A?:string
+
+    @IsOptional()
+    A_minus?:string
+
+    @IsOptional()
+    B_plus?:string
+
+    @IsOptional()
+    B?:string
+
+    @IsOptional()
+    B_minus?:string
+
+    @IsOptional()
+    C_plus?:string
+
+    @IsOptional()
+    C?:string
+
+    @IsOptional()
+    C_minus?:string
+
+    @IsOptional()
+    D?:string
+
+    @IsOptional()
+    F?:string
 }

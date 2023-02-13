@@ -41,12 +41,15 @@ export class UserService {
       }
 
       async updateProfile(user:User, dto: ProfileUpdateDto){
-        if(!user){throw new ForbiddenException('Not authenticated')}
+        if(!user){
+          throw new ForbiddenException('Not authenticated')
+        }
         const returnObj=await this.prisma.user.update({
             where: {id: user.id},
             data:{ 
                 fullName: dto.fullName,
                 email: dto.Email,
+                universityName: dto.universityName
             }
         }) 
         delete returnObj.password
@@ -61,7 +64,11 @@ export class UserService {
         }
         const pass: string=await argon.hash(dto.newPassword)
         //verify if password is correct
-        if(argon.verify(user.password,dto.oldPassword)){
+        const use=await this.prisma.user.findFirst({
+          where:{id: user.id}
+      })
+        const correct=await argon.verify(use.password,dto.oldPassword)
+        if(correct){
                 //insert the password
             const returnObj= await this.prisma.user.update({
                 where:{id: user.id  },
@@ -71,7 +78,7 @@ export class UserService {
             //return object
             return returnObj
         }
-        else throw new ForbiddenException('The old password is wrong')
+        else throw new ForbiddenException('Old password is wrong')
 
       }
 
@@ -90,29 +97,53 @@ export class UserService {
                 break
             }  
         }
+
         if(valid){
-            const returnObj=await this.prisma.grade.update({
-              where:{id: 4},
-              data:{
-                A:dto.A,
-                A_minus:dto.A_minus,
-                B_plus:dto.B_plus,
-                B:dto.B ,
-                B_minus:dto.B_minus,
-                C_plus:dto.C_plus,
-                C:dto.C,
-                C_minus:dto.C_minus,
-                D:dto.D,
-                F:dto.D,
+            const gradeSys=await this.prisma.grade.findUnique({
+              where:{
+                id:user.id,
               }
+            })
+            if(gradeSys){
+              const returnObj=await this.prisma.grade.update({
+                where:{
+                  id: user.id
+                },
+                data:{
+                  A:dto.A,
+                  A_minus:dto.A_minus,
+                  B_plus:dto.B_plus,
+                  B:dto.B ,
+                  B_minus:dto.B_minus,
+                  C_plus:dto.C_plus,
+                  C:dto.C,
+                  C_minus:dto.C_minus,
+                  D:dto.D,
+                  F:dto.F,
+                }
+              })
+              return returnObj
             }
-               
-            )
-            return returnObj
+            else {
+              const returnObj=await this.prisma.grade.create({
+                data:{
+                  userId:user.id,
+                  A:dto.A,
+                  A_minus:dto.A_minus,
+                  B_plus:dto.B_plus,
+                  B:dto.B ,
+                  B_minus:dto.B_minus,
+                  C_plus:dto.C_plus,
+                  C:dto.C,
+                  C_minus:dto.C_minus,
+                  D:dto.D,
+                  F:dto.F,
+                }
+              })
+              return returnObj
+            }
+      
         }
-
-
+        else return {error:'Check order of grades again'}
       }
-
-
     }

@@ -9,7 +9,6 @@ const errorMessage = document.getElementById("errormessage");
 const universityName = document.getElementById("universityName");
 const studyLevel = document.getElementById("studyLevel");
 
-const token = localStorage.getItem('token');
 
 
 const form1 = document.getElementById('form1');
@@ -49,13 +48,6 @@ async function validateForm1(name, email, password) {
         return false;
     }
 
-    const emailTaken = await isEmailTaken(email);
-    if (emailTaken) {
-        alert("email already exists")
-        console.log("email taken");
-        return false;
-    }
-
     // Check if email is valid
     if (!emailRegEx.test(email)) {
         console.log("invalid email");
@@ -70,46 +62,26 @@ async function validateForm1(name, email, password) {
 }
 
 
-async function isEmailTaken(email) {
-    const response = await fetch('localhost:3003/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
-    });
-
-    const data = await response.json();
-
-    if (data.error) {
-        return false;
-    }
-    return data;
-}
-
-
 createAcc.addEventListener("click", async function () {
-    // validate form
-    if (universityName.value == "") {
-        return;
-    }
+
     // create user fetch
     // requestbody: name, email, password, universityName, Study Level
-    const response = await fetch('localhost:3003/auth/signup', {
+    const response = await fetch('http:localhost:3003/auth/signup', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userName, email, password, universityName, studyLevel }),
+        body: JSON.stringify({ fullName: userName.value, email: email.value, password : password.value, universityName : universityName.value }),
     });
 
     const data = await response.json();
 
-    if (data.success) {
+    if (response.ok) {
         // redirect to the user page
-        localStorage.setItem("token", data.token);
-        window.location.href = "/user-page";
+        localStorage.setItem("access_token", data.access_token);
+        window.location.href = "./user.html";
+        console.log("reached here!")
     } else {
-        console.log("failed to create account!");
+        console.log(data)
     }
 })
