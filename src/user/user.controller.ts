@@ -9,19 +9,21 @@ import { UserService } from './user.service';
 @Controller('user')
 export class UserController {
     constructor( private userservice: UserService) {}
+    
+    @Get('me')
+    getMe(@GetUser() user: User){
+        return user;
+    }
 
-    @Post('add-grade')
+    @Post('add')
     addGrade ( @Body() userdto: UserDto): string{
         const grade = this.userservice.insert(userdto);
         return `Grade for ${grade.subject} added successfully. CGPA: ${this.userservice.calculateCGPA()}`;
     }
+    
 
-    @Get('calculate-cgpa')
+    @Get('cgpa')
     calculateCGPA(): number {
         return this.userservice.calculateCGPA();
-    }
-    @Get('me')
-    getMe(@GetUser() user: User){
-        return user;
     }
 }
