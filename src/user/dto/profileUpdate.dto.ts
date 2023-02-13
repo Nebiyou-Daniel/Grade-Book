@@ -5,7 +5,6 @@ export class ProfileUpdateDto{
     @IsString()
     fullName:string
     
-    @IsNotEmpty()
     @IsString()
     universityName:string
 
