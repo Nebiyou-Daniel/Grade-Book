@@ -16,6 +16,22 @@
 </head>
 
 <body>
+    <!-- message error -->
+    <div id="error-popup" class="fs-2 fw-bold shadow text-light top-0 start-0 end-0 ">
+        <div
+            class="text-center error-message start-0 end-0 w-50 border shadow border-dark border-2 rounded-2 bg-danger text-dark">
+            <p id="error-text"></p>
+            <img src="images/warning.png" alt="Error : " class="border image-fluid border-dark rounded-pill"
+                style="width: 2em">
+        </div>
+    </div>
+
+    <!-- small top popup -->
+    <div id="popup" class="border text-center alert alert-info fs-5 p-1" role="alert">
+        <p id="message" class="alert-link"></p>
+    </div>
+
+
     <nav class="fixed-top bg-primary ps-5 p-1 container-fluid border-bottom">
         <div class="text-center m-auto d-inline text-light">Step <span id="pagenum">1</span> of 2</div>
     </nav>
@@ -31,7 +47,8 @@
 
         <!-- a Carousel of first and second signup forms-->
 
-        <div class="swipeLeft form-container easein col-sm-12 col-md-6 order-2 order-md-1 p-5 border mt-5 container-fluid d-flex flex-column justify-content-center">
+        <div
+            class="swipeLeft form-container easein col-sm-12 col-md-6 order-2 order-md-1 p-5 border mt-5 container-fluid d-flex flex-column justify-content-center">
             <form class="swipeLeft h-100" id="form1">
                 <div class="d-flex align-items-center mb-5 ">
                     <a href="index.html" title="Go Back"><img class="position-relative top-0"
@@ -51,18 +68,20 @@
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" minlength="8" class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" id="password" placeholder="Enter your password" required>
+                    <input type="password" minlength="8" class="form-control"
+                        pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" id="password"
+                        placeholder="Enter your password" required>
                 </div>
 
                 <div class="mb-3 d-flex align-items-center">
                     <button id="nextBtn" class="btn btn-success btn-lg ms-auto me-5" type="submit">Next</button>
                 </div>
-                <div id="errormessage"></div>
             </form>
 
             <form class="swipeLeft h-100" id="form2" class="" style="display:none;">
                 <div class="d-flex align-items-center mb-5">
-                    <a id="backBtn" title="Go Back"><img class="position-relative top-0" src="images/back-button.png" alt="Back" width="40px"></a>
+                    <a id="backBtn" title="Go Back"><img class="position-relative top-0" src="images/back-button.png"
+                            alt="Back" width="40px"></a>
                     <legend class="display-5 ms-5">Create Account:</legend>
                 </div>
 
@@ -80,7 +99,8 @@
                     </select>
                 </div>
 
-                <input id="createAcc" class="btn btn-primary d-block btn-lg ms-auto border" type="submit" value="CREATE ACCOUNT" aria-label="submit">
+                <input id="createAcc" class="btn btn-primary d-block btn-lg ms-auto border" type="submit"
+                    value="CREATE ACCOUNT" aria-label="submit">
             </form>
             <div class="text-muted  position-fixed bottom-0 ">Already have an account? <a href="login.html">Login</a>
             </div>
