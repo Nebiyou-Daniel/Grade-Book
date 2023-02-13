@@ -52,8 +52,23 @@ function displayErrorMessage(errorContent) {
     }, 2000);
 }
 
+
+function displayTop(message) {
+    const popup = document.getElementById("popup");
+    const messageElement = document.getElementById("message");
+
+    messageElement.innerText = message;
+    popup.style.display = "block";
+
+    setTimeout(function () {
+        popup.style.display = "none";
+    }, 2000);
+}
+
 // displaySuccessMessage("Course Deleted Successfully. ")
 // displayErrorMessage('Error test message  ')
+// displayTop("Course Deleted Successfully ")
+
 const editButton = document.createElement('img')
 editButton.classList.add('edit-btn', 'cursor');
 editButton.setAttribute('src', "images/edit.png");
@@ -66,36 +81,89 @@ const token = localStorage.getItem('access_token');
 
 // on startup do these
 // get the name, all grades, all gpa, cgpa, 
-getName();
+getMe();
 reload();
+
 
 form.addEventListener('submit', function (event) {
     event.preventDefault();
 })
 
-let yearData = {
-    '11': { courses: [['course', '5', 'A+'], ['computer Architecture', '7', 'A-']] },
-    '12': { courses: [] },
-    '21': { courses: [] },
-    '22': { courses: [] },
-    '31': { courses: [] },
-    '32': { courses: [] },
-    '41': { courses: [] },
-    '42': { courses: [] },
-    '51': { courses: [] },
-    '52': { courses: [] },
+
+
+let yearDatas = {
+    '11': [
+        {
+            courseName: "name",
+            grade: 'A+',
+            creditHours: 4,
+            year: 3,
+            semester: 4,
+        },
+        {
+            courseName: "abebe",
+            grade: 'A-',
+            creditHours: 6,
+            year: 1,
+            semester: 2,
+        },
+    ]
 }
+
+
+let yearData = {
+    '11': [['course', '5', 'A+'], ['computer Architecture', '7', 'A-']],
+    '12': [],
+    '21': [],
+    '22': [],
+    '31': [],
+    '32': [],
+    '41': [],
+    '42': [],
+    '51': [],
+    '52': [],
+}
+
+/**
+ * 
+ * @param {Array[Object]} courses: a list of course object with attributes name, grade, credit hours
+ */
+function updateYeardata(courses) {
+    // reset the yeardata
+    console.log(yearData)
+    for (key in yearData) {
+        while (yearData[key].length > 0) {
+            yearData[key].pop();
+        }
+    }
+
+    // for each course add it to the right key
+    let newCourseList;
+    let yearSem;
+    for (course of courses) {
+        newCourseList = [],
+            newCourseList.push(course.courseName)
+        newCourseList.push(course.creditHours)
+        newCourseList.push(course.grade)
+        yearSem = "";
+        yearSem += course.year;
+        yearSem += course.semester;
+
+        yearData[yearSem].push(newCourseList);
+    }
+}
+
 let gpaData = {
-    '11':  5,
-    '12':  3,
-    '21':  4,
-    '22':  6,
-    '31':  7,
-    '32':  8,
-    '41':  3,
-    '42':  7,
-    '51':  2,
-    '52':  5
+    '11': 5,
+    '12': 3,
+    '21': 4,
+    '22': 6,
+    '31': 7,
+    '32': 8,
+    '41': 3,
+    '42': 7,
+    '51': 2,
+    '52': 5
 }
 
 /**
@@ -103,9 +171,9 @@ let gpaData = {
  */
 async function reload() {
     await getCourses();
-    await getcgpa();
     await getgpa();
     await updateTable();
+    getcgpa();
 }
 
 /**
@@ -123,13 +191,12 @@ async function getCourses() {
     const data = await response.json();
 
     if (data.success) {
-        yearData = data.grades;
+        updateYeardata(data.courses);
+        displayTop("reloaded");
     } else {
-        console.log("unable to fetch data");
+        displayErrorMessage("unable to fetch courses.")
         return;
     }
-    await getgpa();
-    await updateTable();
 }
 
 
@@ -138,7 +205,7 @@ async function getCourses() {
  * 
  * @returns void, sets the name at the top right nav to the user's first Name.
  */
-async function getName() {
+async function getMe() {
 
     const response = await fetch('http:localhost:3003/user/me', {
         method: "GET",
@@ -153,7 +220,7 @@ async function getName() {
     if (response.ok) {
         userName.innerHTML = (data.fullName).split(' ')[0];
     } else {
-        userName.innerHTML = '_';
+        userName.innerHTML = '...';
         console.log("unable to fetch userName");
         return;
     }
@@ -230,15 +297,15 @@ async function updateTable() {
 
     // set current year, semester gpa
     semesterGpa.innerText = gpaData[yearSem];
-    
+
     // render table by values at the yearData
     tbody.innerHTML = '';
 
-    let rowsData = yearData[yearSem].courses;
+    let rowsData = yearData[yearSem];
 
     if (rowsData.length === 0) {
         tbody.innerHTML = "<p>EMPTY : Insert Course !</p>";
-        return ;
+        return;
     }
     // iterating through the year data, creatig rows on the way.
     for (let i = 0; i < rowsData.length; i++) {
@@ -273,7 +340,7 @@ async function updateTable() {
 }
 
 
-// edit grade
+// edit, delete and add course fetches below
 
 const editPopup = document.querySelector("#popup-background");
 const deletePopup = document.querySelector("#delete-popup");

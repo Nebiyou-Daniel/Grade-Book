@@ -16,20 +16,25 @@
 </head>
 
 <body class="min-height-100">
+
+    <!-- small top popup -->
+    <div id="popup" class="border text-center alert alert-info fw-bold fs-2 p-1" role="alert">
+        <p id="message" class="alert-link"></p>
+    </div>
+
     <!-- message success -->
-    <div id="message-container" class="fs-2 fw-bold shadow text-light w-100 h-100 top-0 bottom-0">
-        <div id="message-box"
-            class="message-success bg-success text-center rounded-2 border border-2 border-dark top-50 start-50">
-            <img src="images/success.png" alt="SUCCESS : " class="w-25 ">
+    <div id="message-container" class="fs-2 fw-bold shadow text-light top-0 start-0 end-0 ">
+        <div id="message-box" class="message-success bg-success text-center rounded-2 border border-2 border-dark start-0 end-0 w-50">
             <p id="message-text"> </p>
+            <img src="images/success.png" alt="SUCCESS : " class="image-fluid" style="width: 2em">
         </div>
     </div>
 
     <!-- message error -->
-    <div class="top-0  bottom-0 start-0 end-0 fs-2 text-center fw-bold shadow" id="error-popup" class="fs-2">
-        <div class="error-message top-50 start-50 border shadow border-dark border-2 rounded-2 bg-danger text-dark">
-            <img src="images/warning.png" alt="Error : " class="w-25 border border-dark rounded-pill">
-            <p id="error-text" class="text-center"></p>
+    <div id="error-popup"  class="fs-2 fw-bold shadow text-light top-0 start-0 end-0 ">
+        <div class="text-center error-message start-0 end-0 w-50 border shadow border-dark border-2 rounded-2 bg-danger text-dark">
+            <p id="error-text" ></p>
+            <img src="images/warning.png" alt="Error : " class="border image-fluid border-dark rounded-pill"  style="width: 2em">
         </div>
     </div>
 
@@ -40,7 +45,7 @@
             <img src="images/gradulation-hat.png" class="navbar-brand img-fluid ms-2 me-5" alt="gradebook_logo"
                 id="logo" title="Home">
 
-            <div class="display-5 ms-auto me-auto d-none d-lg-flex text-light">Settings</div>
+            <div class="fs-5 ms-auto me-auto d-lg-flex text-light">Settings</div>
             <ul class="navbar me-2 mb-2 mb-lg-0 ">
                 <div class="dropdown">
                     <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -109,7 +114,7 @@
 
                             <div class="mb-3 d-flex align-items-center">
                                 <button class="btn btn-success btn-lg ms-auto me-5" type="submit"
-                                    id="updateProfile">Update</button>
+                                    id="updateProfile">Update Profile</button>
                             </div>
                         </form>
                     </div>
@@ -119,11 +124,9 @@
 
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Change Password
-                </button>
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> Change Password </button>
             </h2>
+
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                 data-bs-parent="#accordionExample">
                 <div class="accordion-body">
@@ -149,10 +152,10 @@
                             <button class="btn btn-success btn-lg ms-auto me-5" type="submit" id="updatePassword">Update Password</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
+
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -172,50 +175,54 @@
                         </thead>
                         <tbody>
                             <tr>
+                                <td>A <sup>+</sup></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="4.00" id="A_plus" ></td>
+                            </tr>
+                            <tr>
                                 <td>A</td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="4.00"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="4.00" id="A" ></td>
                             </tr>
                             <tr>
                                 <td>A<sup>-</sup></td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="3.75"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="3.75" id="A_minus" ></td>
                             </tr>
                             <tr>
                                 <td>B<sup>+</sup></td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="3.5"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="3.5" id="B_plus" ></td>
                             </tr>
                             <tr>
                                 <td>B</td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="3.25"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="3.25" id="B" ></td>
                             </tr>
                             <tr>
                                 <td>B<sup>-</sup></td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="3.00"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="3.00" id="B_minus" ></td>
                             </tr>
                             <tr>
                                 <td>C<sup>+</sup></td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="2.75"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="2.75" id="C_plus" ></td>
                             </tr>
                             <tr>
                                 <td>C</td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="2.50"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="2.50" id="C" ></td>
                             </tr>
                             <tr>
                                 <td>C<sup>-</sup></td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="2.00"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="2.00" id="C_minus" ></td>
                             </tr>
                             <tr>
                                 <td>D</td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="1.75"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="1.75" id="D" ></td>
                             </tr>
                             <tr>
                                 <td>F</td>
-                                <td><input type="text" min="1" max="4" class="form-control" value="1.50"></td>
+                                <td><input type="text" min="1" max="4" class="form-control" value="1.50" id="F" ></td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div class="mb-3 d-flex align-items-center">
-                        <button class="btn btn-success btn-lg ms-auto me-5" type="submit">Update Changes</button>
+                        <button class="btn btn-success btn-lg ms-auto me-5" type="submit" id="updateGradingSystem">Update Grading System</button>
                     </div>
                 </form>
             </div>
@@ -224,7 +231,7 @@
 
     <!-- <script defer src="script/responsiveUserNavbar.js"></script> -->
     <!-- <script defer src="script/grade_handler.js"></script> -->
-    <footer class="container-fluid bg-primary">
+    <footer class="container-fluid bg-primary position-relative bottom-0">
         <div class="row pt-3">
             <div class="col-12 col-md-4 justify-content-center row text-center">
                 <img class="col-12 img-fluid banner__img" src="images/gradulation-hat.png" alt="Grade Book Logo">
