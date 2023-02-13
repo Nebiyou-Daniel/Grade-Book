@@ -23,19 +23,19 @@ export class CourseController {
 
     }
 
-    @Post('addCourse')
+    @Post('')
     addCourse(@GetUser('id') userId: number, @Body() dto: AddCourseDto){
         return this.courseService.addCourse(userId, dto);
 
     }
 
-    @Patch('editCourse')
+    @Patch('')
     editCourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number, @Body() dto: EditCourseDto){
         return this.courseService.editCourseById(userId, courseId, dto);
 
     }
 
-    @Delete('deleteCourse')
+    @Delete('')
     removeCourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number){
         return this.courseService.removeCourseById(userId, courseId);
 
