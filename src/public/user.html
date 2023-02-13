@@ -16,21 +16,25 @@
 </head>
 
 <body>
+    <!-- small top popup -->
+    <div id="popup" class="border text-center alert alert-info fw-bold fs-2 p-1" role="alert">
+        <p id="message" class="alert-link"></p>
+    </div>
+
 
     <!-- message success -->
-    <div id="message-container" class="fs-2 fw-bold shadow text-light w-100 h-100 top-0 bottom-0">
-        <div id="message-box"
-            class="message-success bg-success text-center rounded-2 border border-2 border-dark top-50 start-50">
-            <img src="images/success.png" alt="SUCCESS : " class="w-25 ">
+    <div id="message-container" class="fs-2 fw-bold shadow text-light top-0 start-0 end-0 ">
+        <div id="message-box" class="message-success bg-success text-center rounded-2 border border-2 border-dark start-0 end-0 w-50">
             <p id="message-text"> </p>
+            <img src="images/success.png" alt="SUCCESS : " class="image-fluid" style="width: 2em">
         </div>
     </div>
 
     <!-- message error -->
-    <div class="top-0  bottom-0 start-0 end-0 fs-2 text-center fw-bold shadow" id="error-popup" class="fs-2">
-        <div class="error-message top-50 start-50 border shadow border-dark border-2 rounded-2 bg-danger text-dark">
-            <img src="images/warning.png" alt="Error : " class="w-25 border border-dark rounded-pill">
-            <p id="error-text" class="text-center"></p>
+    <div id="error-popup"  class="fs-2 fw-bold shadow text-light top-0 start-0 end-0 ">
+        <div class="text-center error-message start-0 end-0 w-50 border shadow border-dark border-2 rounded-2 bg-danger text-dark">
+            <p id="error-text" ></p>
+            <img src="images/warning.png" alt="Error : " class="border image-fluid border-dark rounded-pill"  style="width: 2em">
         </div>
     </div>
 
