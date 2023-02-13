@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 export class AddCourseDto{
     @IsNotEmpty()
     @IsString()
-    subject: string;
+    courseName: string;
 
     @IsNotEmpty()
     @IsString()
@@ -14,12 +14,12 @@ export class AddCourseDto{
     credit: string;
 
     @IsNotEmpty()
-    @IsNumber()
-    year: number;
+    @IsString()
+    year: string;
 
     @IsNotEmpty()
-    @IsNumber()
-    semester: number;
+    @IsString()
+    semester: string;
 }
 
 

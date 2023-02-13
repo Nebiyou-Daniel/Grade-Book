@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AddCourseDto, EditCourseDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ForbiddenException } from '@nestjs/common/exceptions';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class CourseService {
@@ -25,12 +26,14 @@ export class CourseService {
     }
 
     async addCourse(userId: number, dto: AddCourseDto){
-      // const course = await this.prisma.course.create({
-      //   data: {
-      //     userId,
-      //     ...dto,
-      //   }
-      // })
+      const course = await this.prisma.course.create({
+        data: {
+          userId,
+          ...dto,
+        }
+      })
+
+      return course;
     }
 
     async editCourseById(userId: number, courseId: number, dto: EditCourseDto){
