@@ -17,11 +17,7 @@ model User {
   email          String  @unique
   password       String
   universityName String?
-<<<<<<< HEAD
-  cgpa           String @default(value: "'0'")
-=======
   cgpa           String  @default(value: "'0'")
->>>>>>> main
 
   courses Course[]
   Grade   Grade[]
@@ -30,12 +26,11 @@ model User {
 }
 
 model Course {
-  id        Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  year     Int
-  semester Int
-
-  courseName String @unique
+  year       String
+  semester   String
+  courseName String
   credit     String
   score      String
 
@@ -47,7 +42,7 @@ model Course {
 
 model Grade {
   id     Int  @id @default(autoincrement())
-  userId Int @unique
+  userId Int  @unique
   user   User @relation(fields: [userId], references: [id])
 
   A       String @default(value: "'4.0'")

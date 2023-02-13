@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 import { IsEmail, IsNotEmpty } from "class-validator";
 
 
@@ -16,7 +16,7 @@ export class AuthDtoSignup{
     @IsString()    
     password: string;
 
-
+    @IsOptional()
     @IsString()
     universityName: string;
 }

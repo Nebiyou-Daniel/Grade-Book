@@ -41,7 +41,9 @@ export class UserService {
       }
 
       async updateProfile(user:User, dto: ProfileUpdateDto){
-        if(!user){throw new ForbiddenException('Not authenticated')}
+        if(!user){
+          throw new ForbiddenException('Not authenticated')
+        }
         const returnObj=await this.prisma.user.update({
             where: {id: user.id},
             data:{ 
@@ -95,12 +97,18 @@ export class UserService {
                 break
             }  
         }
-        console.log(dto)
+
         if(valid){
-            const gradeSys=await this.prisma.grade.findUnique({where:{userId:user.id}})
+            const gradeSys=await this.prisma.grade.findUnique({
+              where:{
+                id:user.id,
+              }
+            })
             if(gradeSys){
               const returnObj=await this.prisma.grade.update({
-                where:{userId: user.id},
+                where:{
+                  id: user.id
+                },
                 data:{
                   A:dto.A,
                   A_minus:dto.A_minus,
@@ -137,9 +145,5 @@ export class UserService {
       
         }
         else return {error:'Check order of grades again'}
-
-
       }
-
-
     }
