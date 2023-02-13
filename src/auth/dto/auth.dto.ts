@@ -16,6 +16,10 @@ export class AuthDtoSignup{
     @IsString()    
     password: string;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5962f595bef23cbc23f9675b5f5d8f7797ecf824
     @IsOptional()
     @IsString()
     universityName: string;

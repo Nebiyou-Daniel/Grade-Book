@@ -22,7 +22,7 @@ form.addEventListener('submit', async (event) => {
     console.log(data)
 
     if (response.ok) {
-        localStorage.setItem("access4_token", data.access_token);
+        localStorage.setItem("access_token", data.access_token);
         console.log(data);
         await Redirect();
     } else {
