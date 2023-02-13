@@ -91,25 +91,6 @@ form.addEventListener('submit', function (event) {
 
 
 
-let yearDatas = {
-    '11': [
-        {
-            courseName: "name",
-            grade: 'A+',
-            creditHours: 4,
-            year: 3,
-            semester: 4,
-        },
-        {
-            courseName: "abebe",
-            grade: 'A-',
-            creditHours: 6,
-            year: 1,
-            semester: 2,
-        },
-    ]
-}
-
 
 let yearData = {
     '11': [['course', '5', 'A+'], ['computer Architecture', '7', 'A-']],
@@ -154,16 +135,16 @@ function updateYeardata(courses) {
 }
 
 let gpaData = {
-    '11': 5,
-    '12': 3,
-    '21': 4,
-    '22': 6,
-    '31': 7,
-    '32': 8,
-    '41': 3,
-    '42': 7,
-    '51': 2,
-    '52': 5
+    '11': "0",
+    '12': "0",
+    '21': "0",
+    '22': "0",
+    '31': "0",
+    '32': "0",
+    '41': "0",
+    '42': "0",
+    '51': "0",
+    '52': "0"
 }
 
 /**

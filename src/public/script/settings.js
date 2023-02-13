@@ -138,7 +138,7 @@ document.getElementById("updateProfile").addEventListener('click', async () => {
  */
 document.getElementById("updatePassword").addEventListener('click', async () => {
     if (validateFormPassword()) {
-        const response = await fetch('http:localhost:3003/user/me/password', {
+        const response = await fetch('http:localhost:3003/user/updatePassword', {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
