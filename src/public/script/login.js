@@ -1,15 +1,37 @@
 
 
-const form = document.getElementById("form");
+function displayErrorMessage(errorContent) {
+    const errorPopup = document.getElementById("error-popup");
+    const errorText = document.getElementById("error-text");
+
+    errorText.innerHTML = errorContent;
+    errorPopup.style.display = "block";
+
+    setTimeout(function () {
+        errorPopup.style.display = "none";
+    }, 2000);
+}
 
 
-form.addEventListener('submit', async (event) => {
+function displayTop(message) {
+    const popup = document.getElementById("popup");
+    const messageElement = document.getElementById("message");
+
+    messageElement.innerText = message;
+    popup.style.display = "block";
+
+    setTimeout(function () {
+        popup.style.display = "none";
+    }, 2000);
+}
+
+
+document.getElementById("form").addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
 
-    console.log(email,password)
     const response = await fetch('http:localhost:3003/auth/login', {
         method: "POST",
         headers: {
@@ -19,14 +41,13 @@ form.addEventListener('submit', async (event) => {
     });
 
     const data = await response.json();
-    console.log(data)
 
     if (response.ok) {
         localStorage.setItem("access_token", data.access_token);
-        console.log(data);
+        displayTop("Login Success");
         await Redirect();
     } else {
-        alert("Login failed. Please try again.");
+        displayErrorMessage("Login failed. Please try again.");
         return ;
     }
 });
