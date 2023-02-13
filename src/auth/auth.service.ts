@@ -24,10 +24,6 @@ export class AuthService {
                     fullName: dto.fullName,
                     universityName: dto.universityName,
                     password,
-<<<<<<< HEAD
-                 
-=======
->>>>>>> 5962f595bef23cbc23f9675b5f5d8f7797ecf824
                 }
             })
 
