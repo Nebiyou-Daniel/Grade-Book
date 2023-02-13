@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { AddCourseDto, EditCourseDto } from './dto';
+import { AddCourseDto, EditCourseDto, GPADto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { User } from '@prisma/client';
+import { ParseFloatPipe } from '@nestjs/common/pipes';
 
 @Injectable()
 export class CourseService {
@@ -23,6 +24,41 @@ export class CourseService {
           id: courseId,
         }
       })
+    }
+    async getCGPA(userId: number){
+      const courses = this.getCourse(userId);
+      let sumTotal = 0;
+      let sumOfCredits = 0;
+      for (const course of await courses) {
+        let temp1 = Number(course['score']) * Number(course['credit'])
+        let temp2 = Number(course['credit'])
+        sumTotal += Number(temp1)
+        sumOfCredits += Number(temp2)
+        
+      }
+      return (sumTotal/sumOfCredits).toFixed(2);
+    }
+
+    async getGPA(userId: number, dto: GPADto){
+      const courses = this.getCourse(userId)
+      let sumTotal = 0;
+      let sumOfCredits = 0;
+      for (const course of await courses){
+
+        if (Number(dto.year) === Number(course['year']) && Number(dto.semester) === Number(course['semester'])){
+
+          let temp1 = Number(course['score']) * Number(course['credit'])
+          let temp2 = Number(course['credit'])
+          sumTotal += Number(temp1)
+          sumOfCredits += Number(temp2)
+
+        } else {
+          continue
+        }
+      } if (sumOfCredits === 0){
+        return `There are no courses from year ${dto.year} and semester ${dto.semester}. Try different values.`;
+      }
+      return (sumTotal/sumOfCredits).toFixed(2);
     }
 
     async addCourse(userId: number, dto: AddCourseDto){
