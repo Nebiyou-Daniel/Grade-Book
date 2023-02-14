@@ -51,7 +51,7 @@
                     <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         <img src="images/user.png" alt="profile">
-                        <span id="userName">Unknown</span>
+                        <span id="userName">---</span>
                     </button>
                     <ul class="dropdown-menu">
                         <li class="dropdown-item">
@@ -111,6 +111,15 @@
                                 <input type="email" class="form-control" id="email" placeholder="Enter your email"
                                     required disabled>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="studyLevel">Your Study Level</label>
+                                <select class="form-select" aria-label="Select Study Level" id="studyLevel">
+                                    <option value="highSchool">High School</option>
+                                    <option value="underGraduate" selected>Under Graduate</option>
+                                    <option value="postGraduate">Post Graduate</option>
+                                </select>
+                            </div>
+            
 
                             <div class="mb-3 d-flex align-items-center">
                                 <button class="btn btn-success btn-lg ms-auto me-5" type="submit"

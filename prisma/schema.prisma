@@ -17,6 +17,7 @@ model User {
   email          String  @unique
   password       String
   universityName String?
+  studyLevel     String?
   cgpa           String  @default(value: "'0'")
 
   courses Course[]
@@ -45,6 +46,7 @@ model Grade {
   userId Int  @unique
   user   User @relation(fields: [userId], references: [id])
 
+  A_plus  String @default(value: "'4.0'")
   A       String @default(value: "'4.0'")
   A_minus String @default(value: "'3.75'")
   B_plus  String @default(value: "'3.5'")

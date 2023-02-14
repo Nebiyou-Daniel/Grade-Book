@@ -19,6 +19,10 @@ export class AuthDtoSignup{
     @IsOptional()
     @IsString()
     universityName: string;
+
+    @IsOptional()
+    @IsString()
+    studyLevel: string;
 }
 export class AuthDtoLogin{
 

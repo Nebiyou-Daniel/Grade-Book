@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { Delete, Param } from '@nestjs/common/decorators';;
 import { ParseIntPipe } from '@nestjs/common/pipes';
-import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { CourseService } from './course.service';
@@ -30,6 +29,10 @@ export class CourseController {
     getAllGPA(@GetUser('id') userId: number){
         return this.courseService.getAllGPA(userId);
     }
+    @Post('getId')
+    returnCourseId(@GetUser('id') userId: number, @Body() dto:{courseName: string}){
+        return this.courseService.returnCourseId( dto, userId);
+    }
 
     @Get('/:id')
     getCourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number){
@@ -41,7 +44,6 @@ export class CourseController {
         return this.courseService.addCourse(userId, dto);
 
     }
-
 
     @Patch('/:id')
     editCourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number, @Body() dto: EditCourseDto){

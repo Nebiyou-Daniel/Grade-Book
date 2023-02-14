@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { AddCourseDto, EditCourseDto, GPADto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ForbiddenException } from '@nestjs/common/exceptions';
-import { User } from '@prisma/client';
-import { ParseFloatPipe } from '@nestjs/common/pipes';
+import { ForbiddenException, HttpException } from '@nestjs/common/exceptions';
+
 
 @Injectable()
 export class CourseService {
@@ -30,22 +29,52 @@ export class CourseService {
 // Get the CGPA done for all courses in mind
 
     async getCGPA(userId: number){
+      const grading = this.prisma.grade.findUnique({
+        where: {
+          userId
+        }
+      })
       const courses = this.getCourse(userId);
       let sumTotal = 0;
       let sumOfCredits = 0;
       for (const course of await courses) {
-        let temp1 = Number(course['score']) * Number(course['credit'])
+        let temp1 = Number((await grading)[course['score']]) * Number(course['credit'])
         let temp2 = Number(course['credit'])
         sumTotal += Number(temp1)
         sumOfCredits += Number(temp2)
         
       }
-      return (sumTotal/sumOfCredits).toFixed(2);
+      if (sumOfCredits === 0){
+        await this.prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data:{
+            cgpa: "0"
+          }
+        })
+        return {cgpa: "0"};
+      }
+      await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data:{
+          cgpa: String((sumTotal/sumOfCredits).toFixed(2))
+        }
+      })
+      
+      return {cgpa:(sumTotal/sumOfCredits).toFixed(2)};
     }
 
 // get GPA of certain year and semester
 
     async getGPA(userId: number, dto: GPADto){
+      const grading = this.prisma.grade.findUnique({
+        where: {
+          userId
+        }
+      })
       const courses = this.getCourse(userId)
       let sumTotal = 0;
       let sumOfCredits = 0;
@@ -53,7 +82,7 @@ export class CourseService {
 
         if (Number(dto.year) === Number(course['year']) && Number(dto.semester) === Number(course['semester'])){
 
-          let temp1 = Number(course['score']) * Number(course['credit'])
+          let temp1 = Number((await grading)[course['score']]) * Number(course['credit'])
           let temp2 = Number(course['credit'])
           sumTotal += Number(temp1)
           sumOfCredits += Number(temp2)
@@ -62,7 +91,7 @@ export class CourseService {
           continue
         }
       } if (sumOfCredits === 0){
-        return `NO COURSES`;
+        return `no courses`;
       }
       return (sumTotal/sumOfCredits).toFixed(2);
     }
@@ -83,6 +112,18 @@ export class CourseService {
 // add a new course by giving it course name, your score and the credit for that score
 
     async addCourse(userId: number, dto: AddCourseDto){
+      const repeatCourse = await this.prisma.course.findFirst({
+        where: {
+          courseName: dto.courseName,
+        }
+      })
+      if (repeatCourse){
+        throw new HttpException({
+          status: HttpStatus.BAD_REQUEST,
+          error: `course already existed at Year: ${repeatCourse.year} and Semester: ${repeatCourse.semester}`,
+        }, 400);
+        
+      }
       const course = await this.prisma.course.create({
         data: {
           userId,
@@ -93,7 +134,15 @@ export class CourseService {
       return course;
     }
 // edit a certain course 
-
+  async returnCourseId(dto:{courseName: string}, userId: number){
+    const courses =  this.getCourse(userId);
+    for (const course of await courses){
+      if(course.courseName === dto.courseName){
+        return course.id;
+      }
+    }
+    return 'no course by specified course name';
+  }
     async editCourseById(userId: number, courseId: number, dto: EditCourseDto){
       const course = await this.prisma.course.findUnique({
         where: {
@@ -101,7 +150,7 @@ export class CourseService {
         }
       })
       if (!course || course.userId !== userId){
-        throw new ForbiddenException('Access to edit denied')
+        throw new ForbiddenException('Access to edit denied');
       }
       return this.prisma.course.update({
         where: {

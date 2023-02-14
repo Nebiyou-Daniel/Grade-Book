@@ -93,7 +93,7 @@ createAcc.addEventListener("click", async function () {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fullName: userName.value, email: email.value, password: password.value, universityName: universityName.value }),
+        body: JSON.stringify({ fullName: userName.value, email: email.value, password: password.value, universityName: universityName.value, studyLevel: studyLevel.value }),
     });
 
     const data = await response.json();
@@ -103,6 +103,6 @@ createAcc.addEventListener("click", async function () {
         localStorage.setItem("access_token", data.access_token);
         window.location.href = "./user.html";
     } else {
-        displayErrorMessage("Email is Already taken.")
+        displayErrorMessage(data.error);
     }
 })
