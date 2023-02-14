@@ -588,11 +588,12 @@ async function addCourseFetch(courseName, score, credit, year, semester) {
         body: JSON.stringify({ courseName, score:score.replace('-','_minus').replace('+','_plus'), credit, year, semester }),
     });
 
+    data = await response.json();
     if (response.ok) {
         reload();
-        displaySuccessMessage("Course added successfully. ")
+        displaySuccessMessage("Course added Successfully");
     } else {
-        displayErrorMessage(`Failed to add course.`)
+        displayErrorMessage(data.error)
         return;
     }
 }

@@ -103,6 +103,6 @@ createAcc.addEventListener("click", async function () {
         localStorage.setItem("access_token", data.access_token);
         window.location.href = "./user.html";
     } else {
-        displayErrorMessage("Email is Already taken.")
+        displayErrorMessage(data.error);
     }
 })

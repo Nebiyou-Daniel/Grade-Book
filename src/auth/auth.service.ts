@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt/dist';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDtoLogin, AuthDtoSignup } from './dto';
@@ -33,13 +33,17 @@ export class AuthService {
         }catch (error){
             if(error instanceof Prisma.PrismaClientKnownRequestError){
                 if(error.code === 'P2002'){
-                    throw new ForbiddenException(`this ${error.meta.target} credential has been taken`)
+                    throw new HttpException({
+                        status: HttpStatus.BAD_REQUEST,
+                        error: "Email Already Taken.",
+                      }, 400);
                 }
             }
-            throw error
-
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: "An error has occured, Try again",
+              }, 400);
         }
-
 
     }
     async login(dto: AuthDtoLogin){
@@ -52,13 +56,19 @@ export class AuthService {
         })
 
         //if user doesn't exist throw exception
-        if(!user) throw new ForbiddenException('Your email is incorrect');
+        if(!user) throw new HttpException({
+            status: HttpStatus.BAD_REQUEST,
+            error: "Your email is incorrect",
+          }, 400);
 
         //compare password
         const pwMatches = await argon.verify(user.password, dto.password);
 
         //if password is incorrect throw exception
-        if(!pwMatches) throw new ForbiddenException('Your password is incorrect');
+        if(!pwMatches) throw new HttpException({
+            status: HttpStatus.BAD_REQUEST,
+            error: `Your Password is Incorrect.`,
+          }, 400);
 
         //return the user
 
