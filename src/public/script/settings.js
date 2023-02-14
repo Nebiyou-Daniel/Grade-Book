@@ -65,10 +65,8 @@ async function updateProfile() {
         },
     });
     const data = await response.json();
-    console.log(localStorage.getItem('access_token'))
-    console.log(data)
+
     if (response.ok) {
-        console.log("here")
         userName.innerHTML = (data.fullName).split(' ')[0];
         fullName.value = (data.fullName);
         email.value = (data.email);
@@ -84,8 +82,8 @@ async function updateProfile() {
 }
 
 async function updateGradingSystem() {
-    const response = await fetch('http:localhost:3003/gradingSystem', {
-        method: "get",
+    const response = await fetch('http:localhost:3003/user/me/gradingsys', {
+        method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -93,6 +91,8 @@ async function updateGradingSystem() {
     });
 
     const data = await response.json();
+
+    console.log(data)
 
     if (response.ok) {
         document.getElementById('A_plus').value = data['A_plus'];
@@ -114,7 +114,7 @@ async function updateGradingSystem() {
 document.getElementById("updateProfile").addEventListener('click', async () => {
     if (validateFormProfile()) {
         const response = await fetch('http:localhost:3003/user/me', {
-            method: "PATCH",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -158,7 +158,7 @@ document.getElementById("updatePassword").addEventListener('click', async () => 
 })
 
 document.getElementById("updateGradingSystem").addEventListener("click", async () => {
-    const response = await fetch('http:localhost:3003/user/me/password', {
+    const response = await fetch('http:localhost:3003/user/me/gradingsys', {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -180,7 +180,7 @@ document.getElementById("updateGradingSystem").addEventListener("click", async (
     });
 
     if (response.ok) {
-        displaySuccessMessage("Grading System Updated suceesfully");
+        displaySuccessMessage("Grading System Updated succesfully");
     } else {
         displayErrorMessage("Failed to Update Grading System");
         updateGradingSystem();
