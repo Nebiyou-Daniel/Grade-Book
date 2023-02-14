@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { AddCourseDto, EditCourseDto, GPADto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ForbiddenException } from '@nestjs/common/exceptions';
+import { ForbiddenException, HttpException } from '@nestjs/common/exceptions';
 
 
 @Injectable()
@@ -112,6 +112,18 @@ export class CourseService {
 // add a new course by giving it course name, your score and the credit for that score
 
     async addCourse(userId: number, dto: AddCourseDto){
+      const repeatCourse = await this.prisma.course.findFirst({
+        where: {
+          courseName: dto.courseName,
+        }
+      })
+      if (repeatCourse){
+        throw new HttpException({
+          status: HttpStatus.BAD_REQUEST,
+          error: `course already existed at Year: ${repeatCourse.year} and Semester: ${repeatCourse.semester}`,
+        }, 400);
+        
+      }
       const course = await this.prisma.course.create({
         data: {
           userId,

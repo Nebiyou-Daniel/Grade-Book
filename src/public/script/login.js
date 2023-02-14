@@ -15,9 +15,8 @@ function displayErrorMessage(errorContent) {
 
 function displayTop(message) {
     const popup = document.getElementById("popup");
-    const messageElement = document.getElementById("message");
 
-    messageElement.innerText = message;
+    document.getElementById("message").innerText = message;
     popup.style.display = "block";
 
     setTimeout(function () {
@@ -41,13 +40,13 @@ document.getElementById("form").addEventListener('submit', async (event) => {
     });
 
     const data = await response.json();
-
+    console.log(data)
     if (response.ok) {
         localStorage.setItem("access_token", data.access_token);
         displayTop("Login Success");
         await Redirect();
     } else {
-        displayErrorMessage("Login failed. Please try again.");
+        displayErrorMessage(data.error);
         return ;
     }
 });
