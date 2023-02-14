@@ -1,14 +1,11 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 
 export class ProfileUpdateDto{
     @IsOptional()
     @IsString()
     fullName?:string
     
+    @IsOptional()
     @IsString()
     universityName?:string
-
-    @IsOptional()
-    @IsEmail()
-    Email?:string
 }
