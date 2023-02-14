@@ -180,7 +180,8 @@ document.getElementById("updateGradingSystem").addEventListener("click", async (
     });
 
     if (response.ok) {
-        displaySuccessMessage("Grading System Updated succesfully");
+        displaySuccessMessage("Grading System Updated suceesfully");
+
     } else {
         displayErrorMessage("Failed to Update Grading System");
         updateGradingSystem();

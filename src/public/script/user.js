@@ -2,7 +2,6 @@
 
 // dom elements needed
 
-
 const table = document.querySelector('#myTable');
 const rows = table.querySelectorAll('tbody tr');
 const editButtons = table.querySelectorAll('.edit-btn');
@@ -209,7 +208,6 @@ function updateYeardata(courses) {
     // for each course add it to the right key
     let newCourseList;
     let yearSem;
-    
     for (let course of courses) {
         newCourseList = [],
             newCourseList.push(course.courseName)
@@ -361,6 +359,59 @@ function currSelected() {
         query.push('2');
     }
     return query;
+}
+
+/**
+ * @returns Void: updates the tables in the current table,and 
+ * fills it with the data that is the currently selected table grades and courses
+ */
+async function updateTable() {
+
+    // check which year and semester is checked
+    let currSelect = currSelected();
+    let yearSem = currSelect[0] + currSelect[1];
+
+    // set current year, semester gpa
+    semesterGpa.innerText = gpaData[yearSem];
+
+    // render table by values at the yearData
+    tbody.innerHTML = '';
+
+    let rowsData = yearData[yearSem];
+
+    if (rowsData.length === 0) {
+        tbody.innerHTML = "<p>EMPTY : Insert Course !</p>";
+        return;
+    }
+    // iterating through the year data, creatig rows on the way.
+    for (let i = 0; i < rowsData.length; i++) {
+        let rowData = rowsData[i];
+        let tr = document.createElement('tr');
+        let td = document.createElement('td');
+        td.innerText = i + 1;
+        tr.append(td);
+        for (let cellData of rowData) {
+            let td = document.createElement('td');
+            td.textContent = cellData;
+            tr.appendChild(td);
+        }
+        // creating the buttons
+        let editButton = document.createElement('img')
+        editButton.classList.add('edit-btn', 'cursor');
+        editButton.setAttribute('src', "images/edit.png");
+
+        let deleteButton = document.createElement('img')
+        deleteButton.classList.add('delete-btn', 'cursor');
+        deleteButton.setAttribute('src', "images/delete.png");
+
+        let editBtn = document.createElement('td');
+        editBtn.appendChild(editButton);
+        let delBtn = document.createElement('td');
+        delBtn.appendChild(deleteButton);
+        tr.appendChild(editBtn);
+        tr.appendChild(delBtn);
+        tbody.appendChild(tr);
+    }
 }
 
 
