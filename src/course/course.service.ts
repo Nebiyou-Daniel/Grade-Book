@@ -9,6 +9,8 @@ import { ParseFloatPipe } from '@nestjs/common/pipes';
 export class CourseService {
     constructor(private prisma: PrismaService){}
 
+// get All courses that belong to a certain user
+
     getCourse(userId: number){
       return this.prisma.course.findMany({
         where: {
@@ -25,6 +27,8 @@ export class CourseService {
         }
       })
     }
+// Get the CGPA done for all courses in mind
+
     async getCGPA(userId: number){
       const courses = this.getCourse(userId);
       let sumTotal = 0;
@@ -38,6 +42,8 @@ export class CourseService {
       }
       return (sumTotal/sumOfCredits).toFixed(2);
     }
+
+// get GPA of certain year and semester
 
     async getGPA(userId: number, dto: GPADto){
       const courses = this.getCourse(userId)
@@ -56,10 +62,25 @@ export class CourseService {
           continue
         }
       } if (sumOfCredits === 0){
-        return `There are no courses from year ${dto.year} and semester ${dto.semester}. Try different values.`;
+        return `NO COURSES`;
       }
       return (sumTotal/sumOfCredits).toFixed(2);
     }
+// get the individual GPA of different years and semsters and return them as an array of objects
+
+    async getAllGPA(userId: number){
+      let AllGpa= {}
+      for (let year = 1; year < 6; year++){
+
+        for (let semester = 1; semester < 3; semester++){
+          let dto = {year: String(Number(year)), semester: String(Number(semester))}
+     
+          AllGpa[`${year}${semester}`] = await this.getGPA(userId, dto)
+        }
+      }
+      return AllGpa;
+    }
+// add a new course by giving it course name, your score and the credit for that score
 
     async addCourse(userId: number, dto: AddCourseDto){
       const course = await this.prisma.course.create({
@@ -71,6 +92,7 @@ export class CourseService {
 
       return course;
     }
+// edit a certain course 
 
     async editCourseById(userId: number, courseId: number, dto: EditCourseDto){
       const course = await this.prisma.course.findUnique({
@@ -90,6 +112,7 @@ export class CourseService {
         }
       })
     }
+// delete a certain course from the database
 
     async removeCourseById(userId: number, courseId: number){
       const course = await this.prisma.course.findUnique({

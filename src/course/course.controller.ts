@@ -27,11 +27,14 @@ export class CourseController {
     getGPA(@GetUser('id') userId: number, @Body() dto: GPADto){
         return this.courseService.getGPA(userId, dto);
     }
+    @Get('allGpa')
+    getAllGPA(@GetUser('id') userId: number){
+        return this.courseService.getAllGPA(userId);
+    }
 
     @Get('/:id')
     getCourseById(@GetUser('id') userId: number, @Param('id', ParseIntPipe) courseId: number){
         return this.courseService.getCourseById(userId, courseId);
-
     }
 
     @Post('add')    
