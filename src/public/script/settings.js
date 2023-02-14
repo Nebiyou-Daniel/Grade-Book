@@ -4,8 +4,15 @@ const userName = document.getElementById('userName');
 const fullName = document.getElementById("name");
 const universityName = document.getElementById("university");
 const email = document.getElementById("email");
+const studyLevel = document.getElementById("studyLevel");
 
-update();
+
+const forms = document.querySelectorAll('form');
+forms.forEach(form => {
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+  });
+});
 
 
 function displaySuccessMessage(messageContent) {
@@ -52,11 +59,11 @@ function displayTop(message) {
  * @returns void, sets the name at the top right nav to the user's first Name.
  */
 async function update() {
-    updateProfile();
+    getProfile();
     updateGradingSystem();
 }
 
-async function updateProfile() {
+async function getProfile() {
     const response = await fetch('http:localhost:3003/user/me', {
         method: "GET",
         headers: {
@@ -70,6 +77,7 @@ async function updateProfile() {
         userName.innerHTML = (data.fullName).split(' ')[0];
         fullName.value = (data.fullName);
         email.value = (data.email);
+        studyLevel.value = (data.studyLevel);
         if (data.universityName) {
             universityName.value = (data.universityName);
         } else {
@@ -80,6 +88,9 @@ async function updateProfile() {
     }
 
 }
+
+update();
+
 
 async function updateGradingSystem() {
     const response = await fetch('http:localhost:3003/user/me/gradingsys', {
@@ -92,7 +103,7 @@ async function updateGradingSystem() {
 
     const data = await response.json();
 
-    console.log(data)
+    // console.log(data)
 
     if (response.ok) {
         document.getElementById('A_plus').value = data['A_plus'];
@@ -112,14 +123,16 @@ async function updateGradingSystem() {
 
 
 document.getElementById("updateProfile").addEventListener('click', async () => {
+    console.log({ fullName: fullName.value, universityName: universityName.value, email: email.value });
+    
     if (validateFormProfile()) {
-        const response = await fetch('http:localhost:3003/user/me', {
-            method: "GET",
+        const response = await fetch('http:localhost:3003/user/me/profile', {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`,
             },
-            body: JSON.stringify({ fullName: fullName.value, universityName: universityName.value, email: email.value }),
+            body: JSON.stringify({ fullName: fullName.value, universityName: universityName.value, email: email.value, studyLevel:studyLevel.value }),
         });
 
         if (response.ok) {
@@ -135,7 +148,7 @@ document.getElementById("updateProfile").addEventListener('click', async () => {
 
 document.getElementById("updatePassword").addEventListener('click', async () => {
     if (validateFormPassword()) {
-        const response = await fetch('http:localhost:3003/user/updatePassword', {
+        const response = await fetch('http:localhost:3003/user/me/password', {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -158,6 +171,7 @@ document.getElementById("updatePassword").addEventListener('click', async () => 
 })
 
 document.getElementById("updateGradingSystem").addEventListener("click", async () => {
+
     const response = await fetch('http:localhost:3003/user/me/gradingsys', {
         method: "PATCH",
         headers: {
@@ -183,7 +197,7 @@ document.getElementById("updateGradingSystem").addEventListener("click", async (
         displaySuccessMessage("Grading System Updated succesfully");
     } else {
         displayErrorMessage("Failed to Update Grading System");
-        updateGradingSystem();
+        // updateGradingSystem();
     }
 })
 
@@ -191,6 +205,7 @@ function validateFormProfile() {
     if (fullName.value == "") {
         return false;
     }
+    return true;
 }
 
 function validateFormPassword() {

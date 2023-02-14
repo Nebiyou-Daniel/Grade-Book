@@ -8,4 +8,8 @@ export class ProfileUpdateDto{
     @IsOptional()
     @IsString()
     universityName?:string
+
+    @IsOptional()
+    @IsString()
+    studyLevel?:string
 }

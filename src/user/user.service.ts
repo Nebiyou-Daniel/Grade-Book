@@ -4,11 +4,6 @@ import { GradeSystemUpdateDto, PasswordUpdateDto, ProfileUpdateDto } from './dto
 import * as argon from 'argon2'
 import {  User } from '@prisma/client';
 
-export interface Grade {
-    subject: string;
-    score: string;
-    credit: string;
-  }
   
 @Injectable()
 export class UserService {
@@ -29,7 +24,8 @@ export class UserService {
         where: {id: user.id},
         data:{ 
             fullName: dto.fullName,
-            universityName: dto.universityName
+            universityName: dto.universityName,
+            studyLevel: dto.studyLevel
         }
     }) 
     delete returnObj.password
@@ -73,6 +69,7 @@ export class UserService {
     if (!gradingSys){
       await this.prisma.grade.create({data:{
         userId,
+        A_plus: "4.0",
         A : "4.0",
         A_minus: "3.75",
         B_plus: "3.5",

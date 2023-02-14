@@ -73,7 +73,6 @@ async function getCourseId(courseName){
     const data = await response.json();
 
     if (response.ok){
-        // console.log(`data : ${data}`)
         return data;
     } else {
         return "-1";
@@ -305,13 +304,10 @@ async function getgpa() {
 
     const data = await response.json();
 
-    console.log(data)
     if (response.ok) {
         // gpaData = Object(data);
         // iterate the data and set the gpaData at string of key
         for (key in Object(data)){
-            console.log(`${key} : ${data[key]}`)
-            console.log(`${key} : ${gpaData[key]}`)
             gpaData[key] = data[key];
         }
     }
@@ -400,7 +396,7 @@ table.addEventListener("click", event => {
 
         editCourseName.value = column1.innerText;
         editcredit.value = parseInt(column2.innerText);
-        editGrade.value = column3.value;
+        editGrade.value = column3.innerText;
 
         if (!isOkEditClicked) {
             okEdit.addEventListener("click", async () => {
@@ -457,20 +453,20 @@ async function editCourseFetch(prevCourseName, editCourseName, editcredit, editG
     try {
         courseId = await getCourseId(prevCourseName);
     } catch (error) {
-        // console.log(error)
         displayErrorMessage(`Failed to edit the selected course. `)
         return;
     }
 
 
-    // console.log(`course id : ${courseId}`);
+    console.log(`course id : ${courseId}`);
+    console.log({ courseName: editCourseName, credit: editcredit, score :editGrade });
     const response = await fetch(`http:localhost:3003/courses\\${courseId}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ courseName: editCourseName, credit: editcredit, score :editGrade }),
+        body: JSON.stringify({ courseName: editCourseName, credit: editcredit, score :editGrade.replace('+','_plus').replace('-','_minus') }),
     });
 
     const data = await response.json();
@@ -496,7 +492,6 @@ async function deleteCourseFetch(deleteCourseName) {
     try {
         courseId = await getCourseId(deleteCourseName);
     } catch (error) {
-        console.log(error)
         displayErrorMessage(`Failed to delete the selected course. `)
         return;
     }
@@ -529,7 +524,7 @@ addCourseBtn.addEventListener('click', async function () {
         return false;
     }
 
-    await addCourseFetch(courseName.value, score.value, credit.value, yearSelected, semSelected);
+    await addCourseFetch(courseName.value, score.value, String(credit.value), yearSelected, semSelected);
 })
 
 async function addCourseFetch(courseName, score, credit, year, semester) {
